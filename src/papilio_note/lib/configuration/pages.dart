@@ -3,22 +3,20 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ioc_container/ioc_container.dart';
-
-import 'package:md/models/data_model.dart';
-import 'package:md/models/note_route_path.dart';
-import 'package:md/models/view_models.dart';
-import 'package:md/pages/note.dart' as notey;
-import 'package:md/pages/notes.dart';
-import 'package:md/pages/settings.dart';
-import 'package:md/services/file_io/file_io_base.dart';
-
-import 'package:md/utils/constants.dart';
-import 'package:md/utils/misc.dart';
-import 'package:md/widgets/app_scaffold.dart';
 import 'package:navigation_drawer_menu/navigation_drawer_state.dart';
 import 'package:papilio/container_extensions.dart';
 import 'package:papilio/papilio_router_delegate.dart';
 import 'package:papilio/papilio_router_delegate_builder.dart';
+import 'package:papilio_note/models/data_model.dart';
+import 'package:papilio_note/models/note_route_path.dart';
+import 'package:papilio_note/models/view_models.dart';
+import 'package:papilio_note/pages/note.dart' as notey;
+import 'package:papilio_note/pages/notes.dart';
+import 'package:papilio_note/pages/settings.dart';
+import 'package:papilio_note/services/file_io/file_io_base.dart';
+import 'package:papilio_note/utils/constants.dart';
+import 'package:papilio_note/utils/misc.dart';
+import 'package:papilio_note/widgets/app_scaffold.dart';
 
 extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
   void addNotesPage(IocContainer container) =>

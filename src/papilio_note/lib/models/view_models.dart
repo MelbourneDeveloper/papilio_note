@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:md/models/data_model.dart';
-import 'package:md/utils/constants.dart';
 import 'package:papilio/bloc.dart';
+import 'package:papilio_note/models/data_model.dart';
+import 'package:papilio_note/utils/constants.dart';
 
 //View Models
 

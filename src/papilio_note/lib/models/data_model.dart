@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:md/models/view_models.dart';
+import 'package:papilio_note/models/view_models.dart';
 
 class Note {
   String id;

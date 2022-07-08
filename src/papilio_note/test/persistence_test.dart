@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:md/models/data_model.dart';
-import 'package:md/utils/misc.dart';
+import 'package:papilio_note/models/data_model.dart';
+import 'package:papilio_note/utils/misc.dart';
 
 void main() {
   test('Test persistence', () async {

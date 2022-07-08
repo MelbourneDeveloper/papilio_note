@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:md/configuration/routing.dart';
-import 'package:md/models/note_route_path.dart';
-import 'package:md/models/view_models.dart';
-import 'package:md/utils/constants.dart';
 import 'package:mockito/mockito.dart';
+import 'package:papilio_note/configuration/routing.dart';
+import 'package:papilio_note/models/note_route_path.dart';
+import 'package:papilio_note/models/view_models.dart';
+import 'package:papilio_note/utils/constants.dart';
 
 import 'app_test.mocks.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:md/models/note_route_path.dart';
+import 'package:papilio_note/models/note_route_path.dart';
 
 //Colors
 //https://colors.artyclick.com/color-names-dictionary/colors/38ACEC

@@ -6,8 +6,8 @@ import 'dart:async' as _i5;
 import 'dart:ui' as _i9;
 
 import 'package:flutter/material.dart' as _i1;
-import 'package:md/models/note_route_path.dart' as _i3;
-import 'package:md/services/file_io/file_io_base.dart' as _i4;
+import 'package:papilio_note/models/note_route_path.dart' as _i3;
+import 'package:papilio_note/services/file_io/file_io_base.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i2;
 import 'package:papilio/page_args.dart' as _i7;
 import 'package:papilio/page_builder.dart' as _i8;

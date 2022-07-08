@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-
-import 'package:md/models/view_models.dart';
-import 'package:md/utils/constants.dart';
-import 'package:md/utils/widget_builders.dart';
 import 'package:papilio/bloc.dart';
 import 'package:papilio/state_holder.dart';
+import 'package:papilio_note/models/view_models.dart';
+import 'package:papilio_note/utils/constants.dart';
+import 'package:papilio_note/utils/widget_builders.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Note extends StatelessWidget {

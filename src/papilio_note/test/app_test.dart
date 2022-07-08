@@ -3,19 +3,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ioc_container/ioc_container.dart';
-
-import 'package:md/main.dart';
-import 'package:md/models/data_model.dart';
-import 'package:md/models/note_route_path.dart';
-import 'package:md/pages/notes.dart';
-import 'package:md/services/file_io/file_io_base.dart';
-
-import 'package:md/utils/constants.dart';
-import 'package:md/utils/misc.dart';
-import 'package:md/widgets/app_root.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:papilio/papilio_router_delegate.dart';
+import 'package:papilio_note/main.dart';
+import 'package:papilio_note/models/data_model.dart';
+import 'package:papilio_note/models/note_route_path.dart';
+import 'package:papilio_note/pages/notes.dart';
+import 'package:papilio_note/services/file_io/file_io_base.dart';
+import 'package:papilio_note/utils/constants.dart';
+import 'package:papilio_note/utils/misc.dart';
+import 'package:papilio_note/widgets/app_root.dart';
 
 import 'app_test.mocks.dart';
 import 'helpers.dart';

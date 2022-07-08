@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:md/utils/constants.dart';
+import 'package:papilio_note/utils/constants.dart';
 
 BoxDecoration boxDecoration(BuildContext context) => BoxDecoration(
       borderRadius: borderRadius,

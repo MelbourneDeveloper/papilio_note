@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:md/models/view_models.dart';
-import 'package:md/utils/constants.dart';
 import 'package:navigation_drawer_menu/navigation_drawer.dart';
 import 'package:navigation_drawer_menu/navigation_drawer_menu.dart';
 import 'package:navigation_drawer_menu/navigation_drawer_menu_frame.dart';
 import 'package:navigation_drawer_menu/navigation_drawer_state.dart';
 import 'package:papilio/bloc.dart';
 import 'package:papilio/state_holder.dart';
+import 'package:papilio_note/models/view_models.dart';
+import 'package:papilio_note/utils/constants.dart';
 
 final menuItems = [
   MenuItemContent(

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ioc_container/ioc_container.dart';
-import 'package:md/configuration/pages.dart';
-
-import 'package:md/models/note_route_path.dart';
-import 'package:md/models/view_models.dart';
-import 'package:md/utils/constants.dart';
 import 'package:papilio/page_args.dart';
 import 'package:papilio/papilio_router_delegate.dart';
 import 'package:papilio/papilio_routing_configuration.dart';
+import 'package:papilio_note/configuration/pages.dart';
+import 'package:papilio_note/models/note_route_path.dart';
+import 'package:papilio_note/models/view_models.dart';
+import 'package:papilio_note/utils/constants.dart';
 
 ///Configures routing in the app and handles navigation
 PapilioRoutingConfiguration<AppRouteInfo> routingConfig(
