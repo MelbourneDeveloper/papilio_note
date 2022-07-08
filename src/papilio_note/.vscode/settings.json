@@ -1,0 +1,9 @@
+{
+    "lcov.path": "coverage/lcov.info",
+    "lcov.watch": [
+        {
+            "pattern": "**/*.dart"
+        }
+    ],
+    "cmake.configureOnOpen": false
+}
