@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ioc_container/ioc_container.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:navigation_drawer_menu/navigation_drawer_menu.dart';
 import 'package:papilio/papilio_router_delegate.dart';
 import 'package:papilio_note/main.dart';
 import 'package:papilio_note/models/data_model.dart';
@@ -88,6 +89,8 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 
   await matchesGoldenForTestCase<AppRoot>("NotesPage", 'Loading', caseArgs);
 
+  tester.expectMenuSelection(isHamburger, notesKey);
+
   await tester.pumpAndSettle();
 
   await matchesGoldenForTestCase<AppRoot>("NotesPage", 'Loaded', caseArgs);
@@ -99,6 +102,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   //Click on note to open note page
   final key = getNoteButtonKey(persistedModel.notes.first.id);
   await tester.tapByKeyAndSettle(key);
+  tester.expectMenuSelection(isHamburger, newNoteKey);
 
   await matchesGoldenForTestCase<AppRoot>("NotePage", 'Loading', caseArgs);
 
@@ -160,6 +164,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   //Navigate to the notes page from the menu
   await tester.tapByKeyAndSettle(notesKey);
   expect(find.byKey(drawerKey), findsNothing);
+  tester.expectMenuSelection(isHamburger, notesKey);
 
   //Make sure we're not on the note page anymore
   //but we are on the notes page
@@ -174,6 +179,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   //Tap the new note button
   await tester.tapByKeyAndSettle(newNoteButtonKey);
   expect(find.byKey(noteTitleKey), findsOneWidget);
+  tester.expectMenuSelection(isHamburger, newNoteKey);
 
   //Modify title of note that does not exist as a file
   await tester.enterTextByKeyAndSettle(noteTitleKey, "A");
@@ -189,6 +195,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   //Tap the back button
   await tester.tapByKeyAndSettle(backKey);
   expect(find.byKey(notesListViewKey), findsOneWidget);
+  tester.expectMenuSelection(isHamburger, notesKey);
 
   if (isHamburger) {
     await tester.openHamburgerMenu();
@@ -196,6 +203,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 
   //Go to settings
   await tester.tapByKeyAndSettle(settingsKey);
+  tester.expectMenuSelection(isHamburger, settingsKey);
   final checkBoxValue =
       tester.widget<Checkbox>(find.byKey(darkModeCheckBoxKey)).value;
   expect(checkBoxValue, false);
@@ -224,6 +232,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   //Navigate to the note page from the menu
   await tester.tapByKeyAndSettle(newNoteKey);
   expect(find.byKey(noteTitleKey), findsOneWidget);
+  tester.expectMenuSelection(isHamburger, newNoteKey);
 
   await matchesGoldenForTestCase<AppRoot>("NotePage", 'DarkMode', caseArgs);
 }
@@ -255,6 +264,13 @@ extension ModelExtensions on PersistedModel {
 }
 
 extension TesterExtensions2 on WidgetTester {
+  void expectMenuSelection(bool isHamburger, Key key) => !isHamburger
+      ? expect(
+          widget<NavigationDrawerMenu>(find.byType(NavigationDrawerMenu))
+              .selectedMenuKey,
+          key)
+      : null;
+
   Future<void> openHamburgerMenu() async {
     //Check hamburger menu not open
     expect(find.byKey(drawerKey), findsNothing);
