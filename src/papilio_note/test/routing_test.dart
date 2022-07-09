@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ioc_container/ioc_container.dart';
 import 'package:mockito/mockito.dart';
+import 'package:papilio/papilio_router_delegate.dart';
+import 'package:papilio/papilio_routing_configuration.dart';
 import 'package:papilio_note/configuration/routing.dart';
+import 'package:papilio_note/main.dart';
 import 'package:papilio_note/models/note_route_path.dart';
 import 'package:papilio_note/models/view_models.dart';
 import 'package:papilio_note/utils/constants.dart';
@@ -39,6 +43,7 @@ void main() {
     });
   });
 
+  ///This tests the onSetNewRoutePath directly
   test('Test onSetNewRoutePath', () async {
     final mockDelegate = MockPapilioRouterDelegate();
     await onSetNewRoutePath(
@@ -62,6 +67,26 @@ void main() {
         ));
     verify(mockDelegate.navigate<AppViewModel<NoteViewModel>>(newNoteKey,
             arguments: "123"))
+        .called(1);
+  });
+
+  ///This tests that the function on PapilioRoutingConfiguration correctly calls
+  ///onSetNewRoutePath
+  ///Regression for https://github.com/MelbourneDeveloper/papilio_note/issues/1
+  test('Test Composition Correctly Wires Up onSetNewRoutePath', () async {
+    final mockDelegate = MockPapilioRouterDelegate();
+
+    final builder = compose(allowOverrides: true);
+
+    builder.addSingleton<PapilioRouterDelegate<AppRouteInfo>>(
+        (container) => mockDelegate);
+
+    final container = builder.toContainer();
+    final config = container.get<PapilioRoutingConfiguration<AppRouteInfo>>();
+    await config.onSetNewRoutePath!(
+        mockDelegate, const AppRouteInfo(RouteLocation.notes));
+
+    verify(mockDelegate.navigate<AppViewModel<NotesViewModel>>(notesKey))
         .called(1);
   });
 }
