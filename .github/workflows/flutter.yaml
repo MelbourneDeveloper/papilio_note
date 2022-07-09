@@ -33,7 +33,7 @@ jobs:
 
       - name: Flutter test
         working-directory: src/papilio_note
-        run: flutter test --coverage --update-goldens
+        run: flutter test --coverage
 
       - name: Minimum Test Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
