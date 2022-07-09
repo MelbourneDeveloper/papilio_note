@@ -27,9 +27,9 @@ jobs:
         working-directory: src/papilio_note
         run: flutter pub get
 
-      - name: Flutter analyze
+      - name: Dart analyze
         working-directory: src/papilio_note
-        run: flutter analyze
+        run: dart analyze --no-fatal-warnings
 
       - name: Flutter test
         working-directory: src/papilio_note
