@@ -41,14 +41,25 @@ void main() {
 
   test('Test onSetNewRoutePath', () async {
     final mockDelegate = MockPapilioRouterDelegate();
-    onSetNewRoutePath(const AppRouteInfo(RouteLocation.notes), mockDelegate);
+    await onSetNewRoutePath(
+        mockDelegate,
+        const AppRouteInfo(
+          RouteLocation.notes,
+        ));
     verify(mockDelegate.navigate<AppViewModel<NotesViewModel>>(notesKey))
         .called(1);
-    onSetNewRoutePath(const AppRouteInfo(RouteLocation.settings), mockDelegate);
+    await onSetNewRoutePath(
+      mockDelegate,
+      const AppRouteInfo(RouteLocation.settings),
+    );
     verify(mockDelegate.navigate<AppViewModel<SettingsViewModel>>(settingsKey))
         .called(1);
-    onSetNewRoutePath(
-        const AppRouteInfo(RouteLocation.note, noteId: "123"), mockDelegate);
+    await onSetNewRoutePath(
+        mockDelegate,
+        const AppRouteInfo(
+          RouteLocation.note,
+          noteId: "123",
+        ));
     verify(mockDelegate.navigate<AppViewModel<NoteViewModel>>(newNoteKey,
             arguments: "123"))
         .called(1);
