@@ -14,7 +14,7 @@ PapilioRoutingConfiguration<AppRouteInfo> routingConfig(
     PapilioRoutingConfiguration(
         onInit: (delegate, container) =>
             delegate.navigate<AppViewModel<NotesViewModel>>(notesKey),
-        onSetNewRoutePath: (delegate, configuration) async => onSetNewRoutePath,
+        onSetNewRoutePath: onSetNewRoutePath,
         buildRoutes: (delegateBuilder) => delegateBuilder
           ..addNotesPage(container)
           ..addNotePage(container)
@@ -37,8 +37,8 @@ PapilioRoutingConfiguration<AppRouteInfo> routingConfig(
                     ? RouteInformation(location: settingsKey.value)
                     : RouteInformation(location: notesKey.value));
 
-void onSetNewRoutePath(AppRouteInfo configuration,
-        PapilioRouterDelegate<AppRouteInfo> delegate) =>
+Future<void> onSetNewRoutePath(PapilioRouterDelegate<AppRouteInfo> delegate,
+        AppRouteInfo configuration) async =>
     configuration.routeLocation == RouteLocation.note
         ? delegate.navigate<AppViewModel<NoteViewModel>>(newNoteKey,
             arguments: configuration.noteId)
