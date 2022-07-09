@@ -41,7 +41,7 @@ jobs:
           path: "src/papilio_note/coverage/lcov.info"
           min_coverage: 100
 
-      - name: Commit & Push changes
-        uses: actions-js/push@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Commit & Push Goldends
+      #   uses: actions-js/push@master
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
