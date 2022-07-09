@@ -159,7 +159,7 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
                 state.pageViewModel.copyWith(title: event.noteTitle))));
 }
 
-AppScaffold<T> pageBody<T>(
+AppScaffold<T> pageBody<T extends HasPageKey>(
         IocContainer container, Widget body, BuildContext context) =>
     AppScaffold<T>(
         navigationDrawerState: container.get(),

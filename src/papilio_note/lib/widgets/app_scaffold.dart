@@ -26,7 +26,7 @@ final menuItems = [
           MenuItemDefinition("Settings", settingsKey, iconData: Icons.settings))
 ];
 
-class AppScaffold<T> extends StatelessWidget {
+class AppScaffold<T extends HasPageKey> extends StatelessWidget {
   final Widget body;
   final void Function(
           BuildContext context, ValueKey<String>? selectedMenuItemKey)
@@ -86,7 +86,7 @@ class AppScaffold<T> extends StatelessWidget {
   }
 
   Widget getMenu(BuildContext context, NavigationDrawerState state,
-          Snapshot<AppViewModel<dynamic>> snapshot) =>
+          Snapshot<AppViewModel<T>> snapshot) =>
       Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         NavigationDrawerMenu(
             highlightColor: Theme.of(context).indicatorColor,
@@ -96,7 +96,7 @@ class AppScaffold<T> extends StatelessWidget {
               snapshot.sendEventSync(RebuildEvent());
             },
             menuItems: menuItems,
-            selectedMenuKey: snapshot.state.selectedPageKey,
+            selectedMenuKey: snapshot.state.pageViewModel.pageKey,
             itemPadding: const EdgeInsets.only(left: 5, right: 5),
             buildMenuButtonContent: (menuItemDefinition, isSelected,
                     buildContentContext) =>

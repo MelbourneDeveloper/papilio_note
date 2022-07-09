@@ -3,32 +3,33 @@ import 'package:papilio/bloc.dart';
 import 'package:papilio_note/models/data_model.dart';
 import 'package:papilio_note/utils/constants.dart';
 
+abstract class HasPageKey {
+  Key get pageKey;
+  const HasPageKey();
+}
+
 //View Models
 
 @immutable
-class AppViewModel<T> {
-  const AppViewModel(this.title, this.pageViewModel, {this.selectedPageKey});
+class AppViewModel<T extends HasPageKey> {
+  const AppViewModel(this.title, this.pageViewModel);
   final String title;
   final T pageViewModel;
-  final Key? selectedPageKey;
 
   static const AppViewModel<NotesViewModel> emptyNotesViewModel =
-      AppViewModel<NotesViewModel>('Papilio Note', NotesViewModel.empty,
-          selectedPageKey: notesKey);
+      AppViewModel<NotesViewModel>('Papilio Note', NotesViewModel.empty);
 
   static const emptySettingsViewModel = AppViewModel<SettingsViewModel>(
-      'Papilio Note Settings', SettingsViewModel(false),
-      selectedPageKey: settingsKey);
+      'Papilio Note Settings', SettingsViewModel(false));
 
   AppViewModel<T> copyWith({String? title, T? pageViewModel}) {
     return AppViewModel<T>(
-        title ?? this.title, pageViewModel ?? this.pageViewModel,
-        selectedPageKey: selectedPageKey);
+        title ?? this.title, pageViewModel ?? this.pageViewModel);
   }
 }
 
 @immutable
-class NoteViewModel {
+class NoteViewModel extends HasPageKey {
   final String id;
   final String title;
   final String body;
@@ -46,6 +47,9 @@ class NoteViewModel {
           title: title ?? this.title,
           body: body ?? this.body,
           isLoading: isLoading ?? this.isLoading);
+
+  @override
+  Key get pageKey => newNoteKey;
 }
 
 @immutable
@@ -58,7 +62,7 @@ class NoteListItemViewModel {
 }
 
 @immutable
-class NotesViewModel {
+class NotesViewModel extends HasPageKey {
   //TODO: use immutable lists
   final List<NoteListItemViewModel> notes;
   final bool isLoading;
@@ -69,15 +73,21 @@ class NotesViewModel {
   NotesViewModel copyWith(
           {List<NoteListItemViewModel>? notes, bool? isLoading}) =>
       NotesViewModel(notes ?? this.notes, isLoading ?? this.isLoading);
+
+  @override
+  Key get pageKey => notesKey;
 }
 
 @immutable
-class SettingsViewModel {
+class SettingsViewModel extends HasPageKey {
   final bool isDarkMode;
   const SettingsViewModel(this.isDarkMode);
 
   SettingsViewModel copyWith({bool? isDarkMode}) =>
       SettingsViewModel(isDarkMode ?? this.isDarkMode);
+
+  @override
+  Key get pageKey => settingsKey;
 }
 
 extension NoteViewModelExtensions on NoteViewModel {
