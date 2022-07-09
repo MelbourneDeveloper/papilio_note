@@ -33,10 +33,15 @@ jobs:
 
       - name: Flutter test
         working-directory: src/papilio_note
-        run: flutter test --coverage
+        run: flutter test --coverage --update-goldens
 
       - name: Minimum Test Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
         with:
           path: "src/papilio_note/coverage/lcov.info"
           min_coverage: 100
+
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
