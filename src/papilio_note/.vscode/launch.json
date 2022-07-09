@@ -22,5 +22,12 @@
             "program": "lib/main.dart",
             "deviceId": "macos"
         },
+        {
+            "name": "iOS",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "iPhone SE (3rd Generation)"
+        },
     ]
 }
