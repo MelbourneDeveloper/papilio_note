@@ -14,7 +14,8 @@ dependencies:
     sdk: flutter
   flutter_markdown: ^0.6.10+2
   navigation_drawer_menu: ^1.0.0-beta
-  papilio: 0.5.0-beta
+  papilio:
+    path: ../../../papilio
   path_provider: ^2.0.11
   sliding_up_panel: ^2.0.0+1
   uuid: ^3.0.6
@@ -24,6 +25,8 @@ dev_dependencies:
   dart_code_metrics: ^4.16.0
   flutter_lints: ^2.0.0
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   mockito: ^5.2.0
 

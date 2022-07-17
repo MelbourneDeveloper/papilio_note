@@ -35,7 +35,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   final builder = compose(allowOverrides: true);
   final mockFileIO = MockFileIOBase();
 
-  final isHamburger =
+  final isHamburger = caseArgs.displayInfo == null ||
       caseArgs.displayInfo!.physicalSizeTestValue.width <= minimumMenuWidth;
 
   //Mock loadind the model from disk
