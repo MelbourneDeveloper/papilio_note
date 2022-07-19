@@ -6,17 +6,17 @@ const testCaseArgsSet = [
       displayInfo: DisplayInfo(
           physicalSizeTestValue: Size(1920, 1080),
           devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1)),
+          textScaleFactorTestValue: 1),),
   TestCaseArgs(
       displayInfo: DisplayInfo(
           physicalSizeTestValue: Size(1080, 1920),
           devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1)),
+          textScaleFactorTestValue: 1),),
   TestCaseArgs(
       displayInfo: DisplayInfo(
           physicalSizeTestValue: Size(480, 700),
           devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1)),
+          textScaleFactorTestValue: 1),),
 ];
 
 class TestCaseArgs {
@@ -36,7 +36,7 @@ class DisplayInfo {
       required this.textScaleFactorTestValue});
 }
 
-Future matchesGoldenForTestCase<T>(
+Future<void> matchesGoldenForTestCase<T>(
         String pageName, String stepName, TestCaseArgs caseArgs) =>
     caseArgs.displayInfo == null || !caseArgs.checkGoldens
         ? Future.value()

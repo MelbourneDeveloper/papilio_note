@@ -21,33 +21,34 @@ import 'package:papilio_note/widgets/app_scaffold.dart';
 extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
   void addNotesPage(IocContainer container) =>
       addPage<AppViewModel<NotesViewModel>>(
-          initialEvent: LoadNotesEvent(),
-          container: container,
-          name: notesKey.value,
-          initialState: (arguments) => AppViewModel.emptyNotesViewModel,
-          pageBody: (c) =>
-              pageBody<NotesViewModel>(container, const Notes(), c),
-          buildBloc: (blocBuilder, container) => blocBuilder
-            ..addSyncHandler<NavigateToNoteEvent>((state, event) {
-              container.navigate<AppViewModel<NoteViewModel>, AppRouteInfo>(
-                  newNoteKey,
-                  arguments: event.noteId);
-              return state;
-            })
-            ..addSyncHandler<NewNoteEvent>((state, event) {
-              container.navigate<AppViewModel<NoteViewModel>, AppRouteInfo>(
-                  newNoteKey,
-                  arguments: container.get<NewId>()());
+        initialEvent: LoadNotesEvent(),
+        container: container,
+        name: notesKey.value,
+        initialState: (arguments) => AppViewModel.emptyNotesViewModel,
+        pageBody: (c) => pageBody<NotesViewModel>(container, const Notes(), c),
+        buildBloc: (blocBuilder, container) => blocBuilder
+          ..addSyncHandler<NavigateToNoteEvent>((state, event) {
+            container.navigate<AppViewModel<NoteViewModel>, AppRouteInfo>(
+                newNoteKey,
+                arguments: event.noteId);
+            return state;
+          })
+          ..addSyncHandler<NewNoteEvent>((state, event) {
+            container.navigate<AppViewModel<NoteViewModel>, AppRouteInfo>(
+              newNoteKey,
+              arguments: container.get<NewId>()(),
+            );
 
-              return state;
-            })
-            ..addHandler<LoadNotesEvent>(
-                (getState, event, updateState, pageScope) async {
+            return state;
+          })
+          ..addHandler<LoadNotesEvent>(
+            (getState, event, updateState, pageScope) async {
               final appViewModel = getState();
 
               updateState(appViewModel.copyWith(
-                  pageViewModel:
-                      appViewModel.pageViewModel.copyWith(isLoading: true)));
+                pageViewModel:
+                    appViewModel.pageViewModel.copyWith(isLoading: true),
+              ));
 
               final persistedModel = await load(container);
 
@@ -55,7 +56,9 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
 
               return getState()
                   .copyWith(pageViewModel: persistedModel.toNotesViewModel());
-            }));
+            },
+          ),
+      );
 
   void addSettingsPage(IocContainer container) => addPage<
           AppViewModel<SettingsViewModel>>(

@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_markdown: ^0.6.10+2
+  ioc_container: ^0.6.0
   navigation_drawer_menu: ^1.0.0-beta
   papilio: ^0.7.0-beta
   path_provider: ^2.0.11

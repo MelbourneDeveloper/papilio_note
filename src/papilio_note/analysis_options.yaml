@@ -1,3 +1,5 @@
+include: package:lints/recommended.yaml
+
 linter:
   rules:
     - always_declare_return_types
@@ -166,6 +168,14 @@ linter:
 #Changing the severity of rules
 #https://dart-lang.github.io/linter/lints/options/options.html
 analyzer:
+  language:
+    strict-inference: true
+    strict-raw-types: true
+  plugins:
+    - dart_code_metrics
+  strong-mode:
+    #implicit-casts: false
+    #implicit-dynamic: false
   exclude:
     - lib/**.pb.dart
     - lib/**.pbenum.dart
@@ -404,7 +414,7 @@ dart_code_metrics:
     #- newline-before-return
     - no-boolean-literal-compare
     #- no-empty-block
-    #- prefer-trailing-comma
+    - prefer-trailing-comma
     - prefer-conditional-expressions
     - no-equal-then-else
     - avoid_restricted_imports
