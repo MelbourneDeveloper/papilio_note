@@ -1,7 +1,7 @@
 abstract class FileIOBase {
-  Future writeText(String fileName, String text);
+  Future<void> writeText(String fileName, String text);
 
   Future<String?> readText(String fileName);
 
-  Future deleteFile(String fileName);
+  Future<void> deleteFile(String fileName);
 }

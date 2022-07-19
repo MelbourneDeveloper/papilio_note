@@ -212,6 +212,7 @@ void onMenuItemSelected(
     niceRouterDelegate
         .navigate<AppViewModel<NotesViewModel>>(selectedMenuItemKey);
   } else if (selectedMenuItemKey == backKey) {
+    //ignore: avoid-ignoring-return-values
     niceRouterDelegate.pop();
   } else if (selectedMenuItemKey == settingsKey) {
     niceRouterDelegate
@@ -236,5 +237,5 @@ Future<PersistedModel> load(IocContainer ic) async {
 Future<String?> getMd(IocContainer ic, String id) =>
     ic.get<FileIOBase>().readText('$id.md');
 
-Future saveMd(IocContainer ic, String id, String md) =>
+Future<void> saveMd(IocContainer ic, String id, String md) =>
     ic.get<FileIOBase>().writeText('$id.md', md);

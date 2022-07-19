@@ -20,17 +20,22 @@ import 'app_test.mocks.dart';
 import 'helpers.dart';
 
 //flutter pub run build_runner build
-@GenerateMocks([
-  FileIOBase,
-], customMocks: [
-  MockSpec<PapilioRouterDelegate<AppRouteInfo>>(
-      unsupportedMembers: {#currentConfiguration},),
-],)
+@GenerateMocks(
+  [
+    FileIOBase,
+  ],
+  customMocks: [
+    MockSpec<PapilioRouterDelegate<AppRouteInfo>>(
+      unsupportedMembers: {#currentConfiguration},
+    ),
+  ],
+)
 void main() {
   runTestCases('Notes Screen', testNotesPage);
   runTestCases('Empty Notes Screen', testEmptyDataFile);
 }
 
+//ignore: long-method
 Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   final builder = compose(allowOverrides: true);
   final mockFileIO = MockFileIOBase();
@@ -91,6 +96,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 
   tester.expectMenuSelection(isHamburger, notesKey);
 
+  //ignore: avoid-ignoring-return-values
   await tester.pumpAndSettle();
 
   await matchesGoldenForTestCase<AppRoot>("NotesPage", 'Loaded', caseArgs);
@@ -106,6 +112,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 
   await matchesGoldenForTestCase<AppRoot>("NotePage", 'Loading', caseArgs);
 
+  //ignore: avoid-ignoring-return-values
   await tester.pumpAndSettle();
 
   await matchesGoldenForTestCase<AppRoot>("NotePage", 'Loaded', caseArgs);
@@ -119,10 +126,14 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 
   verify(mockFileIO.writeText(dataFilename, modifiedTitleJson)).called(1);
   verify(mockFileIO.writeText(dataFilename, modifiedTitleJson2)).called(1);
+  //ignore: avoid-ignoring-return-values
   verifyNever(mockFileIO.writeText(mdFilename, any));
 
   await matchesGoldenForTestCase<AppRoot>(
-      "NotePage", 'TitleModified', caseArgs,);
+    "NotePage",
+    'TitleModified',
+    caseArgs,
+  );
 
   await tester.enterTextByKeyAndSettle(noteBodyKey, modifiedBody1);
 
@@ -150,6 +161,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 
     //Close menu
     await tester.tapAt(const Offset(10, 400));
+    //ignore: avoid-ignoring-return-values
     await tester.pumpAndSettle();
 
     //Check it's closed again
@@ -184,9 +196,10 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   //Modify title of note that does not exist as a file
   await tester.enterTextByKeyAndSettle(noteTitleKey, "A");
 
-  verify(mockFileIO.writeText(dataFilename,
-          PersistedModel(notes: [Note(id: newId, title: 'A')]).toJsonString(),))
-      .called(1);
+  verify(mockFileIO.writeText(
+    dataFilename,
+    PersistedModel(notes: [Note(id: newId, title: 'A')]).toJsonString(),
+  )).called(1);
 
   if (isHamburger) {
     await tester.openHamburgerMenu();
@@ -209,7 +222,10 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   expect(checkBoxValue, false);
 
   await matchesGoldenForTestCase<AppRoot>(
-      "SettingsPage", 'InitialState', caseArgs,);
+    "SettingsPage",
+    'InitialState',
+    caseArgs,
+  );
 
   await tester.tapByKeyAndSettle(darkModeCheckBoxKey);
 
@@ -238,7 +254,9 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 }
 
 Future<void> testEmptyDataFile(
-    WidgetTester tester, TestCaseArgs caseArgs,) async {
+  WidgetTester tester,
+  TestCaseArgs caseArgs,
+) async {
   final builder = compose(allowOverrides: true);
   final mockFileIO = MockFileIOBase();
 
@@ -250,6 +268,7 @@ Future<void> testEmptyDataFile(
     AppRoot(builder.toContainer()),
   );
 
+  //ignore: avoid-ignoring-return-values
   await tester.pumpAndSettle();
 
   await matchesGoldenForTestCase<AppRoot>("NotesPage", 'Empty', caseArgs);
@@ -268,7 +287,8 @@ extension TesterExtensions2 on WidgetTester {
       ? expect(
           widget<NavigationDrawerMenu>(find.byType(NavigationDrawerMenu))
               .selectedMenuKey,
-          key,)
+          key,
+        )
       : null;
 
   Future<void> openHamburgerMenu() async {

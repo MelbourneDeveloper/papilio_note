@@ -62,8 +62,10 @@ class PersistedModel {
 
   void replace(Note note) {
     if (_notesById.containsKey(note.id)) {
+      //ignore: avoid-ignoring-return-values
       _notesById.remove(note.id);
     }
+    //ignore: avoid-ignoring-return-values
     _notesById.putIfAbsent(note.id, () => note);
   }
 

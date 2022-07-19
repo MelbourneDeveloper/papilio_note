@@ -39,7 +39,7 @@ class FileIO implements FileIOBase {
   }
 
   @override
-  Future deleteFile(String fileName) async {
+  Future<void> deleteFile(String fileName) async {
     final directory = await _getStoragePath();
     final file = File("${"$directory/"}$fileName");
 
@@ -47,6 +47,7 @@ class FileIO implements FileIOBase {
       return;
     }
 
+    //ignore: avoid-ignoring-return-values
     await file.delete();
   }
 }

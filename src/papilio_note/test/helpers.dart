@@ -44,7 +44,10 @@ class DisplayInfo {
 }
 
 Future<void> matchesGoldenForTestCase<T>(
-        String pageName, String stepName, TestCaseArgs caseArgs,) =>
+  String pageName,
+  String stepName,
+  TestCaseArgs caseArgs,
+) =>
     caseArgs.displayInfo == null || !caseArgs.checkGoldens
         ? Future.value()
         : expectLater(
@@ -66,14 +69,16 @@ extension TesterExtensions on WidgetTester {
     addTearDown(binding.window.clearPhysicalSizeTestValue);
   }
 
-  Future tapByKeyAndSettle(Key key) async {
+  Future<void> tapByKeyAndSettle(Key key) async {
     await tap(find.byKey(key));
-    return pumpAndSettle();
+    //ignore: avoid-ignoring-return-values
+    await pumpAndSettle();
   }
 
-  Future enterTextByKeyAndSettle(Key key, String text) async {
+  Future<void> enterTextByKeyAndSettle(Key key, String text) async {
     await enterText(find.byKey(key), text);
-    return pumpAndSettle();
+    //ignore: avoid-ignoring-return-values
+    await pumpAndSettle();
   }
 }
 

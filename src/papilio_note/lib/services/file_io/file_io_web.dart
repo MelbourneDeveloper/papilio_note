@@ -5,7 +5,8 @@ import 'package:papilio_note/services/file_io/file_io_base.dart';
 
 class FileIO implements FileIOBase {
   @override
-  Future deleteFile(String fileName) {
+  Future<void> deleteFile(String fileName) {
+    //ignore: avoid-ignoring-return-values
     html.window.localStorage.remove(fileName);
     return Future.value();
   }
