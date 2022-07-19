@@ -129,17 +129,8 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
                 pageViewModel: state.pageViewModel.copyWith(body: event.body),
               ))
           ..addHandler<ModifyNoteTitle>(
-            (getState, event, update, pageScope) async {
-              final state = getState();
-              final model = await load(container);
-
-              model.replace(
-                state.pageViewModel.toNote()..title = event.noteTitle,
-              );
-
-              await save(model, container);
-              return getState();
-            },
+            (getState, event, updateState, pageScope) =>
+                handleModifyNoteTitle(container, event, getState),
           )
           ..addHandler<ModifyBodyEvent>(
             (getstate, event, update, pageScope) async =>
@@ -174,6 +165,22 @@ Future<AppViewModel<NoteViewModel>> handleLoadNote(
     pageViewModel: appViewModel.pageViewModel
         .copyWith(isLoading: false, title: note.title, body: md),
   );
+}
+
+Future<AppViewModel<NoteViewModel>> handleModifyNoteTitle(
+  IocContainer container,
+  ModifyNoteTitle event,
+  AppViewModel<NoteViewModel> Function() getstate,
+) async {
+  final state = getstate();
+  final model = await load(container);
+
+  model.replace(
+    state.pageViewModel.toNote()..title = event.noteTitle,
+  );
+
+  await save(model, container);
+  return getstate();
 }
 
 Future<AppViewModel<NoteViewModel>> handleModifyBodyEvent(
