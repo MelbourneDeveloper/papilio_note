@@ -11,6 +11,6 @@ void main() {
     WidgetController.hitTestWarningShouldBeFatal = true;
 
     testWidgets(
-        'App Test', (tester) => testNotesPage(tester, const TestCaseArgs()));
+        'App Test', (tester) => testNotesPage(tester, const TestCaseArgs()),);
   });
 }

@@ -27,7 +27,7 @@ const routeTestCases = [
   RouteTestCase("/notes", AppRouteInfo(RouteLocation.notes)),
   RouteTestCase("/note/123", AppRouteInfo(RouteLocation.note, noteId: "123")),
   RouteTestCase(
-      "/note/settings", AppRouteInfo(RouteLocation.note, noteId: "settings")),
+      "/note/settings", AppRouteInfo(RouteLocation.note, noteId: "settings"),),
   RouteTestCase("/settings", AppRouteInfo(RouteLocation.settings)),
   RouteTestCase("/settings/", AppRouteInfo(RouteLocation.settings)),
   RouteTestCase("/note/", AppRouteInfo(RouteLocation.notes)),
@@ -35,12 +35,13 @@ const routeTestCases = [
 
 void main() {
   test('Test Url Parsing', () async {
-    routeTestCases.forEach((element) async {
+    for (final element in routeTestCases) {
       final actual = await parseRouteInformation(
-          RouteInformation(location: element.location));
+        RouteInformation(location: element.location),
+      );
       expect(actual, element.appRouteInfo);
       expect(actual.hashCode, element.appRouteInfo.hashCode);
-    });
+    }
   });
 
   ///This tests the onSetNewRoutePath directly
@@ -50,7 +51,7 @@ void main() {
         mockDelegate,
         const AppRouteInfo(
           RouteLocation.notes,
-        ));
+        ),);
     verify(mockDelegate.navigate<AppViewModel<NotesViewModel>>(notesKey))
         .called(1);
     await onSetNewRoutePath(
@@ -64,9 +65,9 @@ void main() {
         const AppRouteInfo(
           RouteLocation.note,
           noteId: "123",
-        ));
+        ),);
     verify(mockDelegate.navigate<AppViewModel<NoteViewModel>>(newNoteKey,
-            arguments: "123"))
+            arguments: "123",))
         .called(1);
   });
 
@@ -79,12 +80,12 @@ void main() {
     final builder = compose(allowOverrides: true);
 
     builder.addSingleton<PapilioRouterDelegate<AppRouteInfo>>(
-        (container) => mockDelegate);
+        (container) => mockDelegate,);
 
     final container = builder.toContainer();
     final config = container.get<PapilioRoutingConfiguration<AppRouteInfo>>();
     await config.onSetNewRoutePath!(
-        mockDelegate, const AppRouteInfo(RouteLocation.notes));
+        mockDelegate, const AppRouteInfo(RouteLocation.notes),);
 
     verify(mockDelegate.navigate<AppViewModel<NotesViewModel>>(notesKey))
         .called(1);

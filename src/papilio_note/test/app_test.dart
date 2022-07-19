@@ -21,11 +21,11 @@ import 'helpers.dart';
 
 //flutter pub run build_runner build
 @GenerateMocks([
-  FileIOBase
+  FileIOBase,
 ], customMocks: [
   MockSpec<PapilioRouterDelegate<AppRouteInfo>>(
-      unsupportedMembers: {#currentConfiguration})
-])
+      unsupportedMembers: {#currentConfiguration},),
+],)
 void main() {
   runTestCases('Notes Screen', testNotesPage);
   runTestCases('Empty Notes Screen', testEmptyDataFile);
@@ -122,7 +122,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   verifyNever(mockFileIO.writeText(mdFilename, any));
 
   await matchesGoldenForTestCase<AppRoot>(
-      "NotePage", 'TitleModified', caseArgs);
+      "NotePage", 'TitleModified', caseArgs,);
 
   await tester.enterTextByKeyAndSettle(noteBodyKey, modifiedBody1);
 
@@ -185,7 +185,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   await tester.enterTextByKeyAndSettle(noteTitleKey, "A");
 
   verify(mockFileIO.writeText(dataFilename,
-          PersistedModel(notes: [Note(id: newId, title: 'A')]).toJsonString()))
+          PersistedModel(notes: [Note(id: newId, title: 'A')]).toJsonString(),))
       .called(1);
 
   if (isHamburger) {
@@ -209,7 +209,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
   expect(checkBoxValue, false);
 
   await matchesGoldenForTestCase<AppRoot>(
-      "SettingsPage", 'InitialState', caseArgs);
+      "SettingsPage", 'InitialState', caseArgs,);
 
   await tester.tapByKeyAndSettle(darkModeCheckBoxKey);
 
@@ -238,7 +238,7 @@ Future<void> testNotesPage(WidgetTester tester, TestCaseArgs caseArgs) async {
 }
 
 Future<void> testEmptyDataFile(
-    WidgetTester tester, TestCaseArgs caseArgs) async {
+    WidgetTester tester, TestCaseArgs caseArgs,) async {
   final builder = compose(allowOverrides: true);
   final mockFileIO = MockFileIOBase();
 
@@ -268,7 +268,7 @@ extension TesterExtensions2 on WidgetTester {
       ? expect(
           widget<NavigationDrawerMenu>(find.byType(NavigationDrawerMenu))
               .selectedMenuKey,
-          key)
+          key,)
       : null;
 
   Future<void> openHamburgerMenu() async {

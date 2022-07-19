@@ -59,8 +59,10 @@ class Note extends StatelessWidget {
                   textAlignVertical: TextAlignVertical.top,
                   maxLines: null,
                   expands: true,
-                  decoration: borderInputDecoration(context,
-                      contentPadding: const EdgeInsets.all(20)),
+                  decoration: borderInputDecoration(
+                    context,
+                    contentPadding: const EdgeInsets.all(20),
+                  ),
                   onChanged: (t) {
                     blocSnapshot.sendEventSync(ModifyBodyEvent(t));
                     blocSnapshot.sendEvent(ModifyBodyEvent(t));

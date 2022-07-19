@@ -406,7 +406,7 @@ dart_code_metrics:
     source-lines-of-code: 50
     weight-of-class: 0.33
   metrics-exclude:
-    - test/**
+    - test/app_test.mocks.dart
   rules:
     #- newline-before-return
     - no-boolean-literal-compare

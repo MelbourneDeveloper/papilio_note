@@ -29,8 +29,9 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
         buildBloc: (blocBuilder, container) => blocBuilder
           ..addSyncHandler<NavigateToNoteEvent>((state, event) {
             container.navigate<AppViewModel<NoteViewModel>, AppRouteInfo>(
-                newNoteKey,
-                arguments: event.noteId);
+              newNoteKey,
+              arguments: event.noteId,
+            );
             return state;
           })
           ..addSyncHandler<NewNoteEvent>((state, event) {
@@ -60,58 +61,68 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
           ),
       );
 
-  void addSettingsPage(IocContainer container) => addPage<
-          AppViewModel<SettingsViewModel>>(
-      initialEvent: const LoadSettingsEvent(),
-      container: container,
-      name: settingsKey.value,
-      initialState: (arguments) => AppViewModel.emptySettingsViewModel,
-      pageBody: (context) =>
-          pageBody<SettingsViewModel>(container, const SettingsPage(), context),
-      buildBloc: (blocBuilder, container) => blocBuilder
-        ..addHandler<SetTheme>((getState, event, updateState, pageScope) async {
-          final appViewModel = getState();
-
-          final persistedModel = await load(container);
-
-          persistedModel.settings.isDarkMode = event.isDarkMode;
-
-          //This triggers setState so that the theme changes
-          container.get<PersistedModelWrapper>().model = persistedModel;
-
-          await save(persistedModel, container);
-
-          return getState().copyWith(
-              pageViewModel: appViewModel.pageViewModel
-                  .copyWith(isDarkMode: event.isDarkMode));
-        })
-        ..addHandler<LoadSettingsEvent>(
+  void addSettingsPage(IocContainer container) =>
+      addPage<AppViewModel<SettingsViewModel>>(
+        initialEvent: const LoadSettingsEvent(),
+        container: container,
+        name: settingsKey.value,
+        initialState: (arguments) => AppViewModel.emptySettingsViewModel,
+        pageBody: (context) => pageBody<SettingsViewModel>(
+          container,
+          const SettingsPage(),
+          context,
+        ),
+        buildBloc: (blocBuilder, container) => blocBuilder
+          ..addHandler<SetTheme>(
             (getState, event, updateState, pageScope) async {
-          final appViewModel = getState();
+              final appViewModel = getState();
 
-          final persistedModel = await load(container);
+              final persistedModel = await load(container);
 
-          return getState().copyWith(
-              pageViewModel: appViewModel.pageViewModel
-                  .copyWith(isDarkMode: persistedModel.settings.isDarkMode));
-        }));
+              persistedModel.settings.isDarkMode = event.isDarkMode;
+
+              //This triggers setState so that the theme changes
+              container.get<PersistedModelWrapper>().model = persistedModel;
+
+              await save(persistedModel, container);
+
+              return getState().copyWith(
+                pageViewModel: appViewModel.pageViewModel
+                    .copyWith(isDarkMode: event.isDarkMode),
+              );
+            },
+          )
+          ..addHandler<LoadSettingsEvent>(
+            (getState, event, updateState, pageScope) async {
+              final appViewModel = getState();
+
+              final persistedModel = await load(container);
+
+              return getState().copyWith(
+                pageViewModel: appViewModel.pageViewModel
+                    .copyWith(isDarkMode: persistedModel.settings.isDarkMode),
+              );
+            },
+          ),
+      );
 
   void addNotePage(IocContainer container) =>
       addPage<AppViewModel<NoteViewModel>>(
-          container: container,
-          name: newNoteKey.value,
-          initialEvent: LoadNoteEvent(),
-          initialState: (arguments) => AppViewModel(
-                NoteViewModel.emptyTitle,
-                NoteViewModel(container.get<NewId>()()),
-              ).copyWith(
-                  pageViewModel: NoteViewModel(container.get<NewId>()())
-                      .copyWith(id: arguments! as String)),
-          pageBody: (c) =>
-              pageBody<NoteViewModel>(container, const notey.Note(), c),
-          buildBloc: (blocBuilder, container) => blocBuilder
-            ..addHandler<LoadNoteEvent>(
-                (getState, event, updateState, pageScope) async {
+        container: container,
+        name: newNoteKey.value,
+        initialEvent: LoadNoteEvent(),
+        initialState: (arguments) => AppViewModel(
+          NoteViewModel.emptyTitle,
+          NoteViewModel(container.get<NewId>()()),
+        ).copyWith(
+          pageViewModel: NoteViewModel(container.get<NewId>()())
+              .copyWith(id: arguments! as String),
+        ),
+        pageBody: (c) =>
+            pageBody<NoteViewModel>(container, const notey.Note(), c),
+        buildBloc: (blocBuilder, container) => blocBuilder
+          ..addHandler<LoadNoteEvent>(
+            (getState, event, updateState, pageScope) async {
               var appViewModel = getState();
 
               final md =
@@ -126,43 +137,49 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
               note ??= appViewModel.pageViewModel.toNote();
 
               return appViewModel.copyWith(
-                  title: note.title,
-                  pageViewModel: appViewModel.pageViewModel
-                      .copyWith(isLoading: false, title: note.title, body: md));
-            })
-            ..addSyncHandler<ModifyBodyEvent>((state, event) => state.copyWith(
-                pageViewModel: state.pageViewModel.copyWith(body: event.body)))
-            ..addHandler<ModifyNoteTitle>(
-              (getState, event, update, pageScope) async {
-                final state = getState();
-                final model = await load(container);
+                title: note.title,
+                pageViewModel: appViewModel.pageViewModel
+                    .copyWith(isLoading: false, title: note.title, body: md),
+              );
+            },
+          )
+          ..addSyncHandler<ModifyBodyEvent>((state, event) => state.copyWith(
+                pageViewModel: state.pageViewModel.copyWith(body: event.body),
+              ))
+          ..addHandler<ModifyNoteTitle>(
+            (getState, event, update, pageScope) async {
+              final state = getState();
+              final model = await load(container);
 
-                model.replace(
-                    state.pageViewModel.toNote()..title = event.noteTitle);
+              model.replace(
+                state.pageViewModel.toNote()..title = event.noteTitle,
+              );
 
-                await save(model, container);
-                return getState();
-              },
-            )
-            ..addHandler<ModifyBodyEvent>(
-              (getstate, event, update, pageScope) async {
-                final state = getstate();
-                await saveMd(container, state.pageViewModel.id, event.body);
-                final persistedModel = await load(container);
+              await save(model, container);
+              return getState();
+            },
+          )
+          ..addHandler<ModifyBodyEvent>(
+            (getstate, event, update, pageScope) async {
+              final state = getstate();
+              await saveMd(container, state.pageViewModel.id, event.body);
+              final persistedModel = await load(container);
 
-                persistedModel.replace(state.pageViewModel.toNote()
-                  ..excerpt = event.body
-                      .substring(0, min(event.body.length, excerptLength)));
+              persistedModel.replace(state.pageViewModel.toNote()
+                ..excerpt = event.body
+                    .substring(0, min(event.body.length, excerptLength)));
 
-                await save(persistedModel, container);
+              await save(persistedModel, container);
 
-                return getstate();
-              },
-            )
-            ..addSyncHandler<ModifyNoteTitle>((state, event) => state.copyWith(
+              return getstate();
+            },
+          )
+          ..addSyncHandler<ModifyNoteTitle>((state, event) => state.copyWith(
                 title: event.noteTitle,
                 pageViewModel:
-                    state.pageViewModel.copyWith(title: event.noteTitle))));
+                    state.pageViewModel.copyWith(title: event.noteTitle),
+              )),
+      );
 }
 
 AppScaffold<T> pageBody<T extends HasPageKey>(
@@ -188,8 +205,9 @@ void onMenuItemSelected(
       container.get<PapilioRouterDelegate<AppRouteInfo>>();
   if (selectedMenuItemKey == newNoteKey) {
     niceRouterDelegate.navigate<AppViewModel<NoteViewModel>>(
-        selectedMenuItemKey,
-        arguments: container.get<NewId>()());
+      selectedMenuItemKey,
+      arguments: container.get<NewId>()(),
+    );
   } else if (selectedMenuItemKey == notesKey) {
     niceRouterDelegate
         .navigate<AppViewModel<NotesViewModel>>(selectedMenuItemKey);

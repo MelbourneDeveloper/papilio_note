@@ -20,7 +20,9 @@ class AppViewModel<T extends HasPageKey> {
       AppViewModel<NotesViewModel>('Papilio Note', NotesViewModel.empty);
 
   static const emptySettingsViewModel = AppViewModel<SettingsViewModel>(
-      'Papilio Note Settings', SettingsViewModel(false));
+    'Papilio Note Settings',
+    SettingsViewModel(false),
+  );
 
   AppViewModel<T> copyWith({String? title, T? pageViewModel}) {
     return AppViewModel<T>(
@@ -43,8 +45,12 @@ class NoteViewModel extends HasPageKey {
 
   static const emptyTitle = 'Untitled';
 
-  NoteViewModel copyWith(
-          {String? id, String? title, String? body, bool? isLoading}) =>
+  NoteViewModel copyWith({
+    String? id,
+    String? title,
+    String? body,
+    bool? isLoading,
+  }) =>
       NoteViewModel(
         id ?? this.id,
         title: title ?? this.title,

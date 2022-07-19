@@ -3,20 +3,26 @@ import 'package:flutter_test/flutter_test.dart';
 
 const testCaseArgsSet = [
   TestCaseArgs(
-      displayInfo: DisplayInfo(
-          physicalSizeTestValue: Size(1920, 1080),
-          devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1,),),
+    displayInfo: DisplayInfo(
+      physicalSizeTestValue: Size(1920, 1080),
+      devicePixelRatioTestValue: 1,
+      textScaleFactorTestValue: 1,
+    ),
+  ),
   TestCaseArgs(
-      displayInfo: DisplayInfo(
-          physicalSizeTestValue: Size(1080, 1920),
-          devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1,),),
+    displayInfo: DisplayInfo(
+      physicalSizeTestValue: Size(1080, 1920),
+      devicePixelRatioTestValue: 1,
+      textScaleFactorTestValue: 1,
+    ),
+  ),
   TestCaseArgs(
-      displayInfo: DisplayInfo(
-          physicalSizeTestValue: Size(480, 700),
-          devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1,),),
+    displayInfo: DisplayInfo(
+      physicalSizeTestValue: Size(480, 700),
+      devicePixelRatioTestValue: 1,
+      textScaleFactorTestValue: 1,
+    ),
+  ),
 ];
 
 class TestCaseArgs {
@@ -30,14 +36,15 @@ class DisplayInfo {
   final Size physicalSizeTestValue;
   final double textScaleFactorTestValue;
 
-  const DisplayInfo(
-      {required this.devicePixelRatioTestValue,
-      required this.physicalSizeTestValue,
-      required this.textScaleFactorTestValue,});
+  const DisplayInfo({
+    required this.devicePixelRatioTestValue,
+    required this.physicalSizeTestValue,
+    required this.textScaleFactorTestValue,
+  });
 }
 
 Future<void> matchesGoldenForTestCase<T>(
-        String pageName, String stepName, TestCaseArgs caseArgs) =>
+        String pageName, String stepName, TestCaseArgs caseArgs,) =>
     caseArgs.displayInfo == null || !caseArgs.checkGoldens
         ? Future.value()
         : expectLater(
@@ -70,24 +77,25 @@ extension TesterExtensions on WidgetTester {
   }
 }
 
-Future runTestCases(
-    String name,
-    Future<void> Function(WidgetTester, TestCaseArgs caseArgs)
-        runTestCase,) async {
+Future<void> runTestCases(
+  String name,
+  Future<void> Function(WidgetTester, TestCaseArgs caseArgs) runTestCase,
+) async {
   WidgetController.hitTestWarningShouldBeFatal = true;
 
-  testCaseArgsSet.forEach((caseArgs) async {
+  for (final caseArgs in testCaseArgsSet) {
     testWidgets(
-        "$name - "
-        "${caseArgs.displayInfo!.physicalSizeTestValue.width.round()}"
-        " x "
-        "${caseArgs.displayInfo!.physicalSizeTestValue.height.round()}",
-        (tester) async {
-      if (caseArgs.displayInfo != null) {
-        tester.setTestDeviceDisplay(caseArgs.displayInfo!);
-      }
+      "$name - "
+      "${caseArgs.displayInfo!.physicalSizeTestValue.width.round()}"
+      " x "
+      "${caseArgs.displayInfo!.physicalSizeTestValue.height.round()}",
+      (tester) async {
+        if (caseArgs.displayInfo != null) {
+          tester.setTestDeviceDisplay(caseArgs.displayInfo!);
+        }
 
-      await runTestCase(tester, caseArgs);
-    },);
-  });
+        await runTestCase(tester, caseArgs);
+      },
+    );
+  }
 }

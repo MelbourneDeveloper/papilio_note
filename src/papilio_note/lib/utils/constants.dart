@@ -12,20 +12,21 @@ const indicatorColor = Color(0xFF329AD2);
 const darkText = Color(0xFF2C87B8);
 
 final lightTheme = ThemeData(
-    brightness: Brightness.light,
-    fontFamily: "Raleway",
-    selectedRowColor: butterflyBlue,
-    backgroundColor: background,
-    cardColor: Colors.white,
-    shadowColor: shadowColor,
-    indicatorColor: indicatorColor,
-    dividerColor: darkText,
-    appBarTheme: const AppBarTheme(
-      foregroundColor: Colors.white,
-      color: darkBackground,
-      elevation: .5,
-      iconTheme: IconThemeData(color: Colors.black),
-    ));
+  brightness: Brightness.light,
+  fontFamily: "Raleway",
+  selectedRowColor: butterflyBlue,
+  backgroundColor: background,
+  cardColor: Colors.white,
+  shadowColor: shadowColor,
+  indicatorColor: indicatorColor,
+  dividerColor: darkText,
+  appBarTheme: const AppBarTheme(
+    foregroundColor: Colors.white,
+    color: darkBackground,
+    elevation: .5,
+    iconTheme: IconThemeData(color: Colors.black),
+  ),
+);
 
 final darkTheme = ThemeData(
   dividerColor: const Color(0xFFD0ECFB),

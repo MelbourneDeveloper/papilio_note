@@ -42,79 +42,91 @@ class Notes extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 60),
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: FloatingActionButton(
-                            backgroundColor: Theme.of(context).selectedRowColor,
-                            key: newNoteButtonKey,
-                            onPressed: () =>
-                                blocSnapshot.sendEventSync(NewNoteEvent()),
-                            child: const Align(
-                                child: Text(
-                              '+',
-                              style: TextStyle(fontSize: 32),
-                            )),
-                          ))),
+                    constraints: const BoxConstraints(maxHeight: 60),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: FloatingActionButton(
+                        backgroundColor: Theme.of(context).selectedRowColor,
+                        key: newNoteButtonKey,
+                        onPressed: () =>
+                            blocSnapshot.sendEventSync(NewNoteEvent()),
+                        child: const Align(
+                          child: Text(
+                            '+',
+                            style: TextStyle(fontSize: 32),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ]),
             ),
     );
   }
 
-  Widget card(BuildContext context, NoteListItemViewModel noteVm,
-      Snapshot<AppViewModel<NotesViewModel>> blocSnapshot) {
+  Widget card(
+    BuildContext context,
+    NoteListItemViewModel noteVm,
+    Snapshot<AppViewModel<NotesViewModel>> blocSnapshot,
+  ) {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                getBoxShadow(context),
-              ],
-            ),
-            child: Card(
-              shape: const RoundedRectangleBorder(borderRadius: borderRadius),
-              color: Theme.of(context).cardColor,
-              child: TextButton(
-                onPressed: () =>
-                    blocSnapshot.sendEventSync(NavigateToNoteEvent(noteVm.id)),
-                key: getNoteButtonKey(noteVm.id),
-                child: SizedBox(
-                  height: 170,
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                          child: SizedBox(
-                            height: 28,
-                            child: Text(
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).dividerColor,
-                                  fontSize: 18),
-                              '• ${noteVm.title}',
-                              textAlign: TextAlign.left,
-                            ),
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            getBoxShadow(context),
+          ],
+        ),
+        child: Card(
+          shape: const RoundedRectangleBorder(borderRadius: borderRadius),
+          color: Theme.of(context).cardColor,
+          child: TextButton(
+            onPressed: () =>
+                blocSnapshot.sendEventSync(NavigateToNoteEvent(noteVm.id)),
+            key: getNoteButtonKey(noteVm.id),
+            child: SizedBox(
+              height: 170,
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                      child: SizedBox(
+                        height: 28,
+                        child: Text(
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).dividerColor,
+                            fontSize: 18,
                           ),
+                          '• ${noteVm.title}',
+                          textAlign: TextAlign.left,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
-                        child: ConstrainedBox(
-                            constraints: const BoxConstraints(
-                                maxHeight: 90, minWidth: double.infinity),
-                            child: Markdown(
-                              physics: const NeverScrollableScrollPhysics(),
-                              data: noteVm.excerpt,
-                            )),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxHeight: 90,
+                        minWidth: double.infinity,
+                      ),
+                      child: Markdown(
+                        physics: const NeverScrollableScrollPhysics(),
+                        data: noteVm.excerpt,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            )));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

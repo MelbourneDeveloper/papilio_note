@@ -70,12 +70,13 @@ class PersistedModel {
 
   PersistedModel.fromJson(Map<String, Object?> json)
       : this(
-            settings:
-                Settings.fromJson(json['settings']! as Map<String, Object?>),
-            notes: (json['notes']! as List<dynamic>)
-                .map((e) =>
-                    e is Map<String, Object?> ? Note.fromJson(e) : e as Note)
-                .toList());
+          settings:
+              Settings.fromJson(json['settings']! as Map<String, Object?>),
+          notes: (json['notes']! as List<dynamic>)
+              .map((e) =>
+                  e is Map<String, Object?> ? Note.fromJson(e) : e as Note)
+              .toList(),
+        );
 
   Map<String, Object?> toJson() => {
         'settings': settings.toJson(),
