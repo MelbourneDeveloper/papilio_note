@@ -167,6 +167,22 @@ Future<AppViewModel<NoteViewModel>> handleLoadNote(
   );
 }
 
+Future<AppViewModel<NoteViewModel>> handleModifyNoteTitle(
+  IocContainer container,
+  ModifyNoteTitle event,
+  AppViewModel<NoteViewModel> Function() getstate,
+) async {
+  final state = getstate();
+  final model = await load(container);
+
+  model.replace(
+    state.pageViewModel.toNote()..title = event.noteTitle,
+  );
+
+  await save(model, container);
+  return getstate();
+}
+
 Future<AppViewModel<NoteViewModel>> handleModifyBodyEvent(
   IocContainer container,
   ModifyBodyEvent event,
@@ -181,22 +197,6 @@ Future<AppViewModel<NoteViewModel>> handleModifyBodyEvent(
 
   await save(persistedModel, container);
 
-  return getstate();
-}
-
-Future<AppViewModel<NoteViewModel>> handleModifyNoteTitle(
-  IocContainer container,
-  ModifyNoteTitle event,
-  AppViewModel<NoteViewModel> Function() getstate,
-) async {
-  final state = getstate();
-  final model = await load(container);
-
-  model.replace(
-    state.pageViewModel.toNote()..title = event.noteTitle,
-  );
-
-  await save(model, container);
   return getstate();
 }
 
