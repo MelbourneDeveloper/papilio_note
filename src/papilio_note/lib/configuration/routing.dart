@@ -10,45 +10,54 @@ import 'package:papilio_note/utils/constants.dart';
 
 ///Configures routing in the app and handles navigation
 PapilioRoutingConfiguration<AppRouteInfo> routingConfig(
-        IocContainer container) =>
+  IocContainer container,
+) =>
     PapilioRoutingConfiguration(
-        onInit: (delegate, container) =>
-            delegate.navigate<AppViewModel<NotesViewModel>>(notesKey),
-        onSetNewRoutePath: onSetNewRoutePath,
-        buildRoutes: (delegateBuilder) => delegateBuilder
-          ..addNotesPage(container)
-          ..addNotePage(container)
-          ..addSettingsPage(container),
-        currentRouteConfiguration: (page) => page.name == notesKey.value
-            ? const AppRouteInfo(RouteLocation.notes)
-            : page.name == settingsKey.value
-                ? const AppRouteInfo(RouteLocation.settings)
-                : AppRouteInfo(RouteLocation.note,
-                    noteId: (page.arguments! as PageArgs).arguments! as String),
-        parseRouteInformation: parseRouteInformation,
-        restoreRouteInformation: (appRouteInfo) =>
-            //Note: we can serialize state here
-            //and deserialize it in parseRouteInformation
-            appRouteInfo.routeLocation == RouteLocation.note
-                ? RouteInformation(
-                    location: '${newNoteKey.value}/${appRouteInfo.noteId}',
-                  )
-                : appRouteInfo.routeLocation == RouteLocation.settings
-                    ? RouteInformation(location: settingsKey.value)
-                    : RouteInformation(location: notesKey.value));
+      onInit: (delegate, container) =>
+          delegate.navigate<AppViewModel<NotesViewModel>>(notesKey),
+      onSetNewRoutePath: onSetNewRoutePath,
+      buildRoutes: (delegateBuilder) => delegateBuilder
+        ..addNotesPage(container)
+        ..addNotePage(container)
+        ..addSettingsPage(container),
+      currentRouteConfiguration: (page) => page.name == notesKey.value
+          ? const AppRouteInfo(RouteLocation.notes)
+          : page.name == settingsKey.value
+              ? const AppRouteInfo(RouteLocation.settings)
+              : AppRouteInfo(
+                  RouteLocation.note,
+                  noteId: (page.arguments! as PageArgs).arguments! as String,
+                ),
+      parseRouteInformation: parseRouteInformation,
+      restoreRouteInformation: (appRouteInfo) =>
+          //Note: we can serialize state here
+          //and deserialize it in parseRouteInformation
+          appRouteInfo.routeLocation == RouteLocation.note
+              ? RouteInformation(
+                  location: '${newNoteKey.value}/${appRouteInfo.noteId}',
+                )
+              : appRouteInfo.routeLocation == RouteLocation.settings
+                  ? RouteInformation(location: settingsKey.value)
+                  : RouteInformation(location: notesKey.value),
+    );
 
-Future<void> onSetNewRoutePath(PapilioRouterDelegate<AppRouteInfo> delegate,
-        AppRouteInfo configuration) async =>
+Future<void> onSetNewRoutePath(
+  PapilioRouterDelegate<AppRouteInfo> delegate,
+  AppRouteInfo configuration,
+) async =>
     configuration.routeLocation == RouteLocation.note
-        ? delegate.navigate<AppViewModel<NoteViewModel>>(newNoteKey,
-            arguments: configuration.noteId)
+        ? delegate.navigate<AppViewModel<NoteViewModel>>(
+            newNoteKey,
+            arguments: configuration.noteId,
+          )
         : configuration.routeLocation == RouteLocation.notes
             ? delegate.navigate<AppViewModel<NotesViewModel>>(notesKey)
             : delegate.navigate<AppViewModel<SettingsViewModel>>(settingsKey);
 
 ///Converts a Url string in to [AppRouteInfo]
 Future<AppRouteInfo> parseRouteInformation(
-    RouteInformation routeInformation) async {
+  RouteInformation routeInformation,
+) async {
   if (routeInformation.location == null || routeInformation.location == '/') {
     return defaultRouteInfo;
   }

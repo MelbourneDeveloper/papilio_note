@@ -11,9 +11,10 @@ class Note {
 
   Note.fromJson(Map<String, Object?> json)
       : this(
-            id: json['id']! as String,
-            title: json['title']! as String,
-            excerpt: json['excerpt']! as String);
+          id: json['id']! as String,
+          title: json['title']! as String,
+          excerpt: json['excerpt']! as String,
+        );
 
   Map<String, Object?> toJson() => {
         'id': id,
@@ -84,9 +85,13 @@ class PersistedModel {
 
 extension PersistedModelExtensions on PersistedModel {
   NotesViewModel toNotesViewModel() => NotesViewModel(
-      _notesById.values
-          .map((e) => NoteListItemViewModel(
-              id: e.id, title: e.title, excerpt: e.excerpt))
-          .toList(),
-      false);
+        _notesById.values
+            .map((e) => NoteListItemViewModel(
+                  id: e.id,
+                  title: e.title,
+                  excerpt: e.excerpt,
+                ))
+            .toList(),
+        false,
+      );
 }

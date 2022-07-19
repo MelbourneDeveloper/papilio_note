@@ -15,47 +15,51 @@ class Notes extends StatelessWidget {
         StateHolder.of<Snapshot<AppViewModel<NotesViewModel>>>(context).state;
 
     return Material(
-        color: Theme.of(context).backgroundColor,
-        child: blocSnapshot.state.pageViewModel.isLoading
-            ? const SizedBox(
-                height: double.infinity,
-                width: double.infinity,
-                child: CircularProgressIndicator.adaptive(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                ))
-            : Align(
-                alignment: Alignment.topCenter,
-                child: Stack(children: [
-                  Column(children: [
-                    Expanded(
-                        child: ListView(
+      color: Theme.of(context).backgroundColor,
+      child: blocSnapshot.state.pageViewModel.isLoading
+          ? const SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: CircularProgressIndicator.adaptive(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              ),
+            )
+          : Align(
+              alignment: Alignment.topCenter,
+              child: Stack(children: [
+                Column(children: [
+                  Expanded(
+                    child: ListView(
                       key: notesListViewKey,
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(20),
                       children: blocSnapshot.state.pageViewModel.notes
                           .map((noteVm) => card(context, noteVm, blocSnapshot))
                           .toList(),
-                    )),
-                  ]),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 60),
-                          child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              child: FloatingActionButton(
-                                backgroundColor:
-                                    Theme.of(context).selectedRowColor,
-                                key: newNoteButtonKey,
-                                onPressed: () =>
-                                    blocSnapshot.sendEventSync(NewNoteEvent()),
-                                child: const Align(
-                                    child: Text(
-                                  '+',
-                                  style: TextStyle(fontSize: 32),
-                                )),
-                              )))),
-                ])));
+                    ),
+                  ),
+                ]),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 60),
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: FloatingActionButton(
+                            backgroundColor: Theme.of(context).selectedRowColor,
+                            key: newNoteButtonKey,
+                            onPressed: () =>
+                                blocSnapshot.sendEventSync(NewNoteEvent()),
+                            child: const Align(
+                                child: Text(
+                              '+',
+                              style: TextStyle(fontSize: 32),
+                            )),
+                          ))),
+                ),
+              ]),
+            ),
+    );
   }
 
   Widget card(BuildContext context, NoteListItemViewModel noteVm,

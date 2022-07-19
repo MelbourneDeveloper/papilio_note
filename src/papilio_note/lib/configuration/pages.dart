@@ -96,84 +96,94 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
                   .copyWith(isDarkMode: persistedModel.settings.isDarkMode));
         }));
 
-  void addNotePage(IocContainer container) => addPage<
-          AppViewModel<NoteViewModel>>(
-      container: container,
-      name: newNoteKey.value,
-      initialEvent: LoadNoteEvent(),
-      initialState: (arguments) => AppViewModel(
-            NoteViewModel.emptyTitle,
-            NoteViewModel(container.get<NewId>()()),
-          ).copyWith(
-              pageViewModel: NoteViewModel(container.get<NewId>()())
-                  .copyWith(id: arguments! as String)),
-      pageBody: (c) =>
-          pageBody<NoteViewModel>(container, const notey.Note(), c),
-      buildBloc: (blocBuilder, container) => blocBuilder
-        ..addHandler<LoadNoteEvent>(
-            (getState, event, updateState, pageScope) async {
-          var appViewModel = getState();
+  void addNotePage(IocContainer container) =>
+      addPage<AppViewModel<NoteViewModel>>(
+          container: container,
+          name: newNoteKey.value,
+          initialEvent: LoadNoteEvent(),
+          initialState: (arguments) => AppViewModel(
+                NoteViewModel.emptyTitle,
+                NoteViewModel(container.get<NewId>()()),
+              ).copyWith(
+                  pageViewModel: NoteViewModel(container.get<NewId>()())
+                      .copyWith(id: arguments! as String)),
+          pageBody: (c) =>
+              pageBody<NoteViewModel>(container, const notey.Note(), c),
+          buildBloc: (blocBuilder, container) => blocBuilder
+            ..addHandler<LoadNoteEvent>(
+                (getState, event, updateState, pageScope) async {
+              var appViewModel = getState();
 
-          final md =
-              (await getMd(container, appViewModel.pageViewModel.id)) ?? '';
+              final md =
+                  (await getMd(container, appViewModel.pageViewModel.id)) ?? '';
 
-          final persistedModel = await load(container);
+              final persistedModel = await load(container);
 
-          appViewModel = getState();
+              appViewModel = getState();
 
-          var note = persistedModel.get(appViewModel.pageViewModel.id);
+              var note = persistedModel.get(appViewModel.pageViewModel.id);
 
-          note ??= appViewModel.pageViewModel.toNote();
+              note ??= appViewModel.pageViewModel.toNote();
 
-          return appViewModel.copyWith(
-              title: note.title,
-              pageViewModel: appViewModel.pageViewModel
-                  .copyWith(isLoading: false, title: note.title, body: md));
-        })
-        ..addSyncHandler<ModifyBodyEvent>((state, event) => state.copyWith(
-            pageViewModel: state.pageViewModel.copyWith(body: event.body)))
-        ..addHandler<ModifyNoteTitle>(
-            (getState, event, update, pageScope) async {
-          final state = getState();
-          final model = await load(container);
+              return appViewModel.copyWith(
+                  title: note.title,
+                  pageViewModel: appViewModel.pageViewModel
+                      .copyWith(isLoading: false, title: note.title, body: md));
+            })
+            ..addSyncHandler<ModifyBodyEvent>((state, event) => state.copyWith(
+                pageViewModel: state.pageViewModel.copyWith(body: event.body)))
+            ..addHandler<ModifyNoteTitle>(
+              (getState, event, update, pageScope) async {
+                final state = getState();
+                final model = await load(container);
 
-          model.replace(state.pageViewModel.toNote()..title = event.noteTitle);
+                model.replace(
+                    state.pageViewModel.toNote()..title = event.noteTitle);
 
-          await save(model, container);
-          return getState();
-        })
-        ..addHandler<ModifyBodyEvent>(
-            (getstate, event, update, pageScope) async {
-          final state = getstate();
-          await saveMd(container, state.pageViewModel.id, event.body);
-          final persistedModel = await load(container);
+                await save(model, container);
+                return getState();
+              },
+            )
+            ..addHandler<ModifyBodyEvent>(
+              (getstate, event, update, pageScope) async {
+                final state = getstate();
+                await saveMd(container, state.pageViewModel.id, event.body);
+                final persistedModel = await load(container);
 
-          persistedModel.replace(state.pageViewModel.toNote()
-            ..excerpt =
-                event.body.substring(0, min(event.body.length, excerptLength)));
+                persistedModel.replace(state.pageViewModel.toNote()
+                  ..excerpt = event.body
+                      .substring(0, min(event.body.length, excerptLength)));
 
-          await save(persistedModel, container);
+                await save(persistedModel, container);
 
-          return getstate();
-        })
-        ..addSyncHandler<ModifyNoteTitle>((state, event) => state.copyWith(
-            title: event.noteTitle,
-            pageViewModel:
-                state.pageViewModel.copyWith(title: event.noteTitle))));
+                return getstate();
+              },
+            )
+            ..addSyncHandler<ModifyNoteTitle>((state, event) => state.copyWith(
+                title: event.noteTitle,
+                pageViewModel:
+                    state.pageViewModel.copyWith(title: event.noteTitle))));
 }
 
 AppScaffold<T> pageBody<T extends HasPageKey>(
-        IocContainer container, Widget body, BuildContext context) =>
+  IocContainer container,
+  Widget body,
+  BuildContext context,
+) =>
     AppScaffold<T>(
-        navigationDrawerState: container.get(),
-        menuMode: container.get<NavigationDrawerState>().menuMode(context),
-        onHamburgerPressed: (c) =>
-            container.get<NavigationDrawerState>().toggle(c),
-        onMenuItemSelected: (c, key) => onMenuItemSelected(container, c, key!),
-        body: body);
+      navigationDrawerState: container.get(),
+      menuMode: container.get<NavigationDrawerState>().menuMode(context),
+      onHamburgerPressed: (c) =>
+          container.get<NavigationDrawerState>().toggle(c),
+      onMenuItemSelected: (c, key) => onMenuItemSelected(container, c, key!),
+      body: body,
+    );
 
-void onMenuItemSelected(IocContainer container, BuildContext context,
-    ValueKey<String> selectedMenuItemKey) {
+void onMenuItemSelected(
+  IocContainer container,
+  BuildContext context,
+  ValueKey<String> selectedMenuItemKey,
+) {
   final niceRouterDelegate =
       container.get<PapilioRouterDelegate<AppRouteInfo>>();
   if (selectedMenuItemKey == newNoteKey) {

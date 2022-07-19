@@ -22,62 +22,70 @@ class Note extends StatelessWidget {
     }
 
     return Form(
-        child: Container(
-            color: Theme.of(context).backgroundColor,
-            child: Column(children: [
+      child: Container(
+        color: Theme.of(context).backgroundColor,
+        child: Column(children: [
+          Padding(
+            padding: topElementInsets,
+            child: SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: TextFormField(
+                key: noteTitleKey,
+                autofocus: true,
+                initialValue: blocSnapshot.state.pageViewModel.title,
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                decoration: borderInputDecoration(
+                  context,
+                  contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                ),
+                onChanged: (t) async {
+                  blocSnapshot.sendEventSync(ModifyNoteTitle(t));
+                  await blocSnapshot.sendEvent(ModifyNoteTitle(t));
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: Stack(children: [
               Padding(
-                  padding: topElementInsets,
-                  child: SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextFormField(
-                        key: noteTitleKey,
-                        autofocus: true,
-                        initialValue: blocSnapshot.state.pageViewModel.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                        decoration: borderInputDecoration(context,
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(20, 0, 20, 30)),
-                        onChanged: (t) async {
-                          blocSnapshot.sendEventSync(ModifyNoteTitle(t));
-                          await blocSnapshot.sendEvent(ModifyNoteTitle(t));
-                        },
-                      ))),
-              Expanded(
-                  child: Stack(children: [
-                Padding(
-                    padding: followingElementInsets,
-                    child: TextFormField(
-                      key: noteBodyKey,
-                      initialValue: blocSnapshot.state.pageViewModel.body,
-                      textAlignVertical: TextAlignVertical.top,
-                      maxLines: null,
-                      expands: true,
-                      decoration: borderInputDecoration(context,
-                          contentPadding: const EdgeInsets.all(20)),
-                      onChanged: (t) {
-                        blocSnapshot.sendEventSync(ModifyBodyEvent(t));
-                        blocSnapshot.sendEvent(ModifyBodyEvent(t));
-                      },
-                    )),
-                SlidingUpPanel(
-                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                  maxHeight: MediaQuery.of(context).size.height * 0.95,
-                  minHeight: 22,
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
-                  panel: Container(
-                      decoration: boxDecoration(context),
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          child: Markdown(
-                            data: blocSnapshot.state.pageViewModel.body,
-                          ))),
-                )
-              ])),
-            ])));
+                padding: followingElementInsets,
+                child: TextFormField(
+                  key: noteBodyKey,
+                  initialValue: blocSnapshot.state.pageViewModel.body,
+                  textAlignVertical: TextAlignVertical.top,
+                  maxLines: null,
+                  expands: true,
+                  decoration: borderInputDecoration(context,
+                      contentPadding: const EdgeInsets.all(20)),
+                  onChanged: (t) {
+                    blocSnapshot.sendEventSync(ModifyBodyEvent(t));
+                    blocSnapshot.sendEvent(ModifyBodyEvent(t));
+                  },
+                ),
+              ),
+              SlidingUpPanel(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                maxHeight: MediaQuery.of(context).size.height * 0.95,
+                minHeight: 22,
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                panel: Container(
+                  decoration: boxDecoration(context),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Markdown(
+                      data: blocSnapshot.state.pageViewModel.body,
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ]),
+      ),
+    );
   }
 }

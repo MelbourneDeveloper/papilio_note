@@ -24,7 +24,9 @@ class AppViewModel<T extends HasPageKey> {
 
   AppViewModel<T> copyWith({String? title, T? pageViewModel}) {
     return AppViewModel<T>(
-        title ?? this.title, pageViewModel ?? this.pageViewModel);
+      title ?? this.title,
+      pageViewModel ?? this.pageViewModel,
+    );
   }
 }
 
@@ -43,10 +45,12 @@ class NoteViewModel extends HasPageKey {
 
   NoteViewModel copyWith(
           {String? id, String? title, String? body, bool? isLoading}) =>
-      NoteViewModel(id ?? this.id,
-          title: title ?? this.title,
-          body: body ?? this.body,
-          isLoading: isLoading ?? this.isLoading);
+      NoteViewModel(
+        id ?? this.id,
+        title: title ?? this.title,
+        body: body ?? this.body,
+        isLoading: isLoading ?? this.isLoading,
+      );
 
   @override
   Key get pageKey => newNoteKey;
@@ -57,8 +61,11 @@ class NoteListItemViewModel {
   final String title;
   final String excerpt;
   final String id;
-  const NoteListItemViewModel(
-      {required this.title, required this.excerpt, required this.id});
+  const NoteListItemViewModel({
+    required this.title,
+    required this.excerpt,
+    required this.id,
+  });
 }
 
 @immutable
@@ -70,8 +77,10 @@ class NotesViewModel extends HasPageKey {
 
   static const NotesViewModel empty = NotesViewModel([], true);
 
-  NotesViewModel copyWith(
-          {List<NoteListItemViewModel>? notes, bool? isLoading}) =>
+  NotesViewModel copyWith({
+    List<NoteListItemViewModel>? notes,
+    bool? isLoading,
+  }) =>
       NotesViewModel(notes ?? this.notes, isLoading ?? this.isLoading);
 
   @override
