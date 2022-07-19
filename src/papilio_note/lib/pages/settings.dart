@@ -15,39 +15,44 @@ class SettingsPage extends StatelessWidget {
             .state;
 
     return SizedBox(
-        height: double.infinity,
-        child: Stack(children: [
-          SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: Material(
-                color: Theme.of(context).backgroundColor,
-              )),
-          Align(
-              child: Container(
-                  height: 100,
-                  width: 300,
-                  decoration: boxDecoration(context),
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Dark Mode',
-                      ),
-                      Checkbox(
-                        key: darkModeCheckBoxKey,
-                        checkColor: Theme.of(context).cardColor,
-                        fillColor: MaterialStateProperty.resolveWith(
-                            (materialStates) =>
-                                Theme.of(context).indicatorColor),
-                        value: blocSnapshot.state.pageViewModel.isDarkMode,
-                        onChanged: (value) {
-                          blocSnapshot.sendEvent(SetTheme(value!));
-                        },
-                      )
-                    ],
-                  ))))
-        ]));
+      height: double.infinity,
+      child: Stack(children: [
+        SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Material(
+            color: Theme.of(context).backgroundColor,
+          ),
+        ),
+        Align(
+          child: Container(
+            height: 100,
+            width: 300,
+            decoration: boxDecoration(context),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Dark Mode',
+                  ),
+                  Checkbox(
+                    key: darkModeCheckBoxKey,
+                    checkColor: Theme.of(context).cardColor,
+                    fillColor: MaterialStateProperty.resolveWith(
+                      (materialStates) => Theme.of(context).indicatorColor,
+                    ),
+                    value: blocSnapshot.state.pageViewModel.isDarkMode,
+                    onChanged: (value) {
+                      blocSnapshot.sendEvent(SetTheme(value!));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ]),
+    );
   }
 }

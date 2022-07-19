@@ -13,17 +13,21 @@ BoxShadow getBoxShadow(BuildContext context) => BoxShadow(
       offset: const Offset(5, 5), // changes position of shadow
     );
 
-InputDecoration borderInputDecoration(BuildContext context,
-        {EdgeInsets? contentPadding}) =>
+InputDecoration borderInputDecoration(
+  BuildContext context, {
+  EdgeInsets? contentPadding,
+}) =>
     InputDecoration(
       fillColor: Theme.of(context).cardColor,
       filled: true,
       hoverColor: Theme.of(context).cardColor,
       contentPadding: contentPadding,
       focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: borderColor),
-          borderRadius: borderRadius),
+        borderSide: BorderSide(color: borderColor),
+        borderRadius: borderRadius,
+      ),
       enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent),
-          borderRadius: borderRadius),
+        borderSide: BorderSide(color: Colors.transparent),
+        borderRadius: borderRadius,
+      ),
     );

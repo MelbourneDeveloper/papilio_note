@@ -6,17 +6,17 @@ const testCaseArgsSet = [
       displayInfo: DisplayInfo(
           physicalSizeTestValue: Size(1920, 1080),
           devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1),),
+          textScaleFactorTestValue: 1,),),
   TestCaseArgs(
       displayInfo: DisplayInfo(
           physicalSizeTestValue: Size(1080, 1920),
           devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1),),
+          textScaleFactorTestValue: 1,),),
   TestCaseArgs(
       displayInfo: DisplayInfo(
           physicalSizeTestValue: Size(480, 700),
           devicePixelRatioTestValue: 1,
-          textScaleFactorTestValue: 1),),
+          textScaleFactorTestValue: 1,),),
 ];
 
 class TestCaseArgs {
@@ -33,7 +33,7 @@ class DisplayInfo {
   const DisplayInfo(
       {required this.devicePixelRatioTestValue,
       required this.physicalSizeTestValue,
-      required this.textScaleFactorTestValue});
+      required this.textScaleFactorTestValue,});
 }
 
 Future<void> matchesGoldenForTestCase<T>(
@@ -73,7 +73,7 @@ extension TesterExtensions on WidgetTester {
 Future runTestCases(
     String name,
     Future<void> Function(WidgetTester, TestCaseArgs caseArgs)
-        runTestCase) async {
+        runTestCase,) async {
   WidgetController.hitTestWarningShouldBeFatal = true;
 
   testCaseArgsSet.forEach((caseArgs) async {
@@ -88,6 +88,6 @@ Future runTestCases(
       }
 
       await runTestCase(tester, caseArgs);
-    });
+    },);
   });
 }

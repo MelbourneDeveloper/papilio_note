@@ -73,46 +73,48 @@ class Notes extends StatelessWidget {
               ],
             ),
             child: Card(
-                shape: const RoundedRectangleBorder(borderRadius: borderRadius),
-                color: Theme.of(context).cardColor,
-                child: TextButton(
-                    onPressed: () => blocSnapshot
-                        .sendEventSync(NavigateToNoteEvent(noteVm.id)),
-                    key: getNoteButtonKey(noteVm.id),
-                    child: SizedBox(
-                        height: 170,
-                        child: Column(
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        24, 24, 24, 0),
-                                    child: SizedBox(
-                                        height: 28,
-                                        child: Text(
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Theme.of(context)
-                                                  .dividerColor,
-                                              fontSize: 18),
-                                          '• ${noteVm.title}',
-                                          textAlign: TextAlign.left,
-                                        )))),
-                            Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 5, 20, 20),
-                                child: ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                        maxHeight: 90,
-                                        minWidth: double.infinity),
-                                    child: Markdown(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      data: noteVm.excerpt,
-                                    )))
-                          ],
-                        ))))));
+              shape: const RoundedRectangleBorder(borderRadius: borderRadius),
+              color: Theme.of(context).cardColor,
+              child: TextButton(
+                onPressed: () =>
+                    blocSnapshot.sendEventSync(NavigateToNoteEvent(noteVm.id)),
+                key: getNoteButtonKey(noteVm.id),
+                child: SizedBox(
+                  height: 170,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                          child: SizedBox(
+                            height: 28,
+                            child: Text(
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context).dividerColor,
+                                  fontSize: 18),
+                              '• ${noteVm.title}',
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
+                        child: ConstrainedBox(
+                            constraints: const BoxConstraints(
+                                maxHeight: 90, minWidth: double.infinity),
+                            child: Markdown(
+                              physics: const NeverScrollableScrollPhysics(),
+                              data: noteVm.excerpt,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )));
   }
 }
 

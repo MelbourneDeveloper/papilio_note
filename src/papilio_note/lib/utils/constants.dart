@@ -28,14 +28,15 @@ final lightTheme = ThemeData(
     ));
 
 final darkTheme = ThemeData(
-    dividerColor: const Color(0xFFD0ECFB),
-    brightness: Brightness.dark,
-    primaryColor: Colors.white,
-    indicatorColor: indicatorColor,
-    shadowColor: const Color(0xFF38AEED),
-    fontFamily: "Raleway",
-    backgroundColor: const Color(0xFF123A4F),
-    cardColor: const Color(0xFF06131A));
+  dividerColor: const Color(0xFFD0ECFB),
+  brightness: Brightness.dark,
+  primaryColor: Colors.white,
+  indicatorColor: indicatorColor,
+  shadowColor: const Color(0xFF38AEED),
+  fontFamily: "Raleway",
+  backgroundColor: const Color(0xFF123A4F),
+  cardColor: const Color(0xFF06131A),
+);
 
 const defaultRouteInfo = AppRouteInfo(RouteLocation.notes);
 

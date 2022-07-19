@@ -177,10 +177,7 @@ analyzer:
     #implicit-casts: false
     #implicit-dynamic: false
   exclude:
-    - lib/**.pb.dart
-    - lib/**.pbenum.dart
-    - lib/**.pbgrpc.dart
-    - lib/**.pbjson.dart
+    - test/app_test.mocks.dart
   errors:
     always_declare_return_types: error
     always_put_control_body_on_new_line: error
