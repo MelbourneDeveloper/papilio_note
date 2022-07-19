@@ -49,12 +49,11 @@ class PersistedModelWrapper extends ChangeNotifier {
 class PersistedModel {
   final Settings settings;
 
-  late final Map<String, Note> _notesById;
+  final Map<String, Note> _notesById;
 
   PersistedModel({Settings? settings, List<Note>? notes})
-      : settings = settings ?? Settings() {
-    _notesById = {for (var note in notes ?? <Note>[]) note.id: note};
-  }
+      : settings = settings ?? Settings(),
+        _notesById = {for (var note in notes ?? <Note>[]) note.id: note};
 
   //TODO: Make immutable
   List<Note> get notes => _notesById.values.toList();
