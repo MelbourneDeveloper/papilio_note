@@ -32,6 +32,7 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
               newNoteKey,
               arguments: event.noteId,
             );
+
             return state;
           })
           ..addSyncHandler<NewNoteEvent>((state, event) {
@@ -180,6 +181,7 @@ Future<AppViewModel<NoteViewModel>> handleModifyNoteTitle(
   );
 
   await save(model, container);
+
   return getstate();
 }
 

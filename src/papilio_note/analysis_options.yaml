@@ -397,8 +397,10 @@ analyzer:
 
 dart_code_metrics:
   anti-patterns:
-    - long-method
-    - long-parameter-list
+    - long-method:
+        severity: error
+    - long-parameter-list:
+        severity: error
   metrics:
     cyclomatic-complexity: 20
     maximum-nesting-level: 5
@@ -408,13 +410,23 @@ dart_code_metrics:
   metrics-exclude:
     - test/app_test.mocks.dart
   rules:
-    #- newline-before-return
-    - no-boolean-literal-compare
-    #- no-empty-block
-    - prefer-trailing-comma
-    - prefer-conditional-expressions
-    - no-equal-then-else
-    - avoid_restricted_imports
-    - avoid-global-state
-    - avoid-ignoring-return-values
-    - avoid-late-keyword
+    - newline-before-return:
+        severity: error
+    - no-boolean-literal-compare:
+        severity: error
+    - no-empty-block:
+        severity: error
+    - prefer-trailing-comma:
+        severity: error
+    - prefer-conditional-expressions:
+        severity: error
+    - no-equal-then-else:
+        severity: error
+    - avoid_restricted_imports:
+        severity: error
+    - avoid-global-state:
+        severity: error
+    - avoid-ignoring-return-values:
+        severity: error
+    - avoid-late-keyword:
+        severity: error

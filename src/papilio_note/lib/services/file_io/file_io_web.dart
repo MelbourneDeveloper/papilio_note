@@ -8,6 +8,7 @@ class FileIO implements FileIOBase {
   Future<void> deleteFile(String fileName) {
     //ignore: avoid-ignoring-return-values
     html.window.localStorage.remove(fileName);
+
     return Future.value();
   }
 
@@ -17,12 +18,14 @@ class FileIO implements FileIOBase {
     if (localStorage2 == null) {
       return Future.value();
     }
+
     return Future.value(localStorage2.toString());
   }
 
   @override
   Future writeText(String fileName, String text) {
     html.window.localStorage[fileName] = text;
+
     return Future.value();
   }
 }

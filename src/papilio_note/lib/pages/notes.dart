@@ -87,45 +87,49 @@ class Notes extends StatelessWidget {
             key: getNoteButtonKey(noteVm.id),
             child: SizedBox(
               height: 170,
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                      child: SizedBox(
-                        height: 28,
-                        child: Text(
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).dividerColor,
-                            fontSize: 18,
-                          ),
-                          '• ${noteVm.title}',
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxHeight: 90,
-                        minWidth: double.infinity,
-                      ),
-                      child: Markdown(
-                        physics: const NeverScrollableScrollPhysics(),
-                        data: noteVm.excerpt,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: cardColumn(context, noteVm),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Column cardColumn(BuildContext context, NoteListItemViewModel noteVm) {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+            child: SizedBox(
+              height: 28,
+              child: Text(
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).dividerColor,
+                  fontSize: 18,
+                ),
+                '• ${noteVm.title}',
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 90,
+              minWidth: double.infinity,
+            ),
+            child: Markdown(
+              physics: const NeverScrollableScrollPhysics(),
+              data: noteVm.excerpt,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

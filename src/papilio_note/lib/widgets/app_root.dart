@@ -22,7 +22,9 @@ class _AppRootState extends State<AppRoot> {
   @override
   void initState() {
     widget.container.get<PersistedModelWrapper>().addListener(() {
-      setState(() {});
+      setState(()
+          //ignore: no-empty-block
+          {});
     });
 
     super.initState();
