@@ -122,26 +122,8 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
             pageBody<NoteViewModel>(container, const notey.Note(), c),
         buildBloc: (blocBuilder, container) => blocBuilder
           ..addHandler<LoadNoteEvent>(
-            (getState, event, updateState, pageScope) async {
-              var appViewModel = getState();
-
-              final md =
-                  (await getMd(container, appViewModel.pageViewModel.id)) ?? '';
-
-              final persistedModel = await load(container);
-
-              appViewModel = getState();
-
-              var note = persistedModel.get(appViewModel.pageViewModel.id);
-
-              note ??= appViewModel.pageViewModel.toNote();
-
-              return appViewModel.copyWith(
-                title: note.title,
-                pageViewModel: appViewModel.pageViewModel
-                    .copyWith(isLoading: false, title: note.title, body: md),
-              );
-            },
+            (getState, event, updateState, pageScope) =>
+                handleLoadNote(container, getState),
           )
           ..addSyncHandler<ModifyBodyEvent>((state, event) => state.copyWith(
                 pageViewModel: state.pageViewModel.copyWith(body: event.body),
@@ -180,6 +162,29 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
                     state.pageViewModel.copyWith(title: event.noteTitle),
               )),
       );
+}
+
+Future<AppViewModel<NoteViewModel>> handleLoadNote(
+  IocContainer container,
+  AppViewModel<NoteViewModel> Function() getState,
+) async {
+  var appViewModel = getState();
+
+  final md = (await getMd(container, appViewModel.pageViewModel.id)) ?? '';
+
+  final persistedModel = await load(container);
+
+  appViewModel = getState();
+
+  var note = persistedModel.get(appViewModel.pageViewModel.id);
+
+  note ??= appViewModel.pageViewModel.toNote();
+
+  return appViewModel.copyWith(
+    title: note.title,
+    pageViewModel: appViewModel.pageViewModel
+        .copyWith(isLoading: false, title: note.title, body: md),
+  );
 }
 
 AppScaffold<T> pageBody<T extends HasPageKey>(
