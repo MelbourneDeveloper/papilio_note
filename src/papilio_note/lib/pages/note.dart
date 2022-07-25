@@ -44,6 +44,7 @@ class Note extends StatelessWidget {
                 ),
                 onChanged: (t) async {
                   blocSnapshot.sendEventSync(ModifyNoteTitle(t));
+                  //ignore: avoid-ignoring-return-values
                   await blocSnapshot.sendEvent(ModifyNoteTitle(t));
                 },
               ),
@@ -65,6 +66,7 @@ class Note extends StatelessWidget {
                   ),
                   onChanged: (t) {
                     blocSnapshot.sendEventSync(ModifyBodyEvent(t));
+                    //ignore: avoid-ignoring-return-values
                     blocSnapshot.sendEvent(ModifyBodyEvent(t));
                   },
                 ),

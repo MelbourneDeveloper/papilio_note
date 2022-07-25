@@ -44,6 +44,7 @@ class SettingsPage extends StatelessWidget {
                     ),
                     value: blocSnapshot.state.pageViewModel.isDarkMode,
                     onChanged: (value) {
+                      //ignore: avoid-ignoring-return-values
                       blocSnapshot.sendEvent(SetTheme(value!));
                     },
                   ),
