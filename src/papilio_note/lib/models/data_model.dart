@@ -1,37 +1,37 @@
-import 'package:flutter/material.dart';
-import 'package:papilio_note/models/view_models.dart';
+import "package:flutter/material.dart";
+import "package:papilio_note/models/view_models.dart";
 
 class Note {
+
+  Note({required this.id, required this.title, final String? excerpt})
+      : excerpt = excerpt ?? "";
+
+  Note.fromJson(final Map<String, Object?> json)
+      : this(
+          id: json["id"]! as String,
+          title: json["title"]! as String,
+          excerpt: json["excerpt"]! as String,
+        );
   String id;
   String title;
   String excerpt;
 
-  Note({required this.id, required this.title, String? excerpt})
-      : excerpt = excerpt ?? '';
-
-  Note.fromJson(Map<String, Object?> json)
-      : this(
-          id: json['id']! as String,
-          title: json['title']! as String,
-          excerpt: json['excerpt']! as String,
-        );
-
   Map<String, Object?> toJson() => {
-        'id': id,
-        'title': title,
-        'excerpt': excerpt,
+        "id": id,
+        "title": title,
+        "excerpt": excerpt,
       };
 }
 
 class Settings {
-  bool isDarkMode;
-  Settings({this.isDarkMode = false});
 
-  Settings.fromJson(Map<String, Object?> json)
-      : this(isDarkMode: json['isDarkMode']! as bool);
+  Settings.fromJson(final Map<String, Object?> json)
+      : this(isDarkMode: json["isDarkMode"]! as bool);
+  Settings({this.isDarkMode = false});
+  bool isDarkMode;
 
   Map<String, Object?> toJson() => {
-        'isDarkMode': isDarkMode,
+        "isDarkMode": isDarkMode,
       };
 }
 
@@ -40,27 +40,37 @@ class PersistedModelWrapper extends ChangeNotifier {
 
   PersistedModel get model => _model;
 
-  set model(PersistedModel value) {
+  set model(final PersistedModel value) {
     _model = value;
     notifyListeners();
   }
 }
 
 class PersistedModel {
+
+  PersistedModel({final Settings? settings, final List<Note>? notes})
+      : settings = settings ?? Settings(),
+        _notesById = {for (var note in notes ?? <Note>[]) note.id: note};
+
+  PersistedModel.fromJson(final Map<String, Object?> json)
+      : this(
+          settings:
+              Settings.fromJson(json["settings"]! as Map<String, Object?>),
+          notes: (json["notes"]! as List<dynamic>)
+              .map((final e) =>
+                  e is Map<String, Object?> ? Note.fromJson(e) : e as Note)
+              .toList(),
+        );
   final Settings settings;
 
   final Map<String, Note> _notesById;
 
-  PersistedModel({Settings? settings, List<Note>? notes})
-      : settings = settings ?? Settings(),
-        _notesById = {for (var note in notes ?? <Note>[]) note.id: note};
-
   //TODO: Make immutable
   List<Note> get notes => _notesById.values.toList();
 
-  Note? get(String id) => _notesById[id];
+  Note? get(final String id) => _notesById[id];
 
-  void replace(Note note) {
+  void replace(final Note note) {
     if (_notesById.containsKey(note.id)) {
       //ignore: avoid-ignoring-return-values
       _notesById.remove(note.id);
@@ -69,26 +79,16 @@ class PersistedModel {
     _notesById.putIfAbsent(note.id, () => note);
   }
 
-  PersistedModel.fromJson(Map<String, Object?> json)
-      : this(
-          settings:
-              Settings.fromJson(json['settings']! as Map<String, Object?>),
-          notes: (json['notes']! as List<dynamic>)
-              .map((e) =>
-                  e is Map<String, Object?> ? Note.fromJson(e) : e as Note)
-              .toList(),
-        );
-
   Map<String, Object?> toJson() => {
-        'settings': settings.toJson(),
-        'notes': _notesById.values.toList(),
+        "settings": settings.toJson(),
+        "notes": _notesById.values.toList(),
       };
 }
 
 extension PersistedModelExtensions on PersistedModel {
   NotesViewModel toNotesViewModel() => NotesViewModel(
         _notesById.values
-            .map((e) => NoteListItemViewModel(
+            .map((final e) => NoteListItemViewModel(
                   id: e.id,
                   title: e.title,
                   excerpt: e.excerpt,

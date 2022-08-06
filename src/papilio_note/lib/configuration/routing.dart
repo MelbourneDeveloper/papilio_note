@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:ioc_container/ioc_container.dart';
-import 'package:papilio/page_args.dart';
-import 'package:papilio/papilio_router_delegate.dart';
-import 'package:papilio/papilio_routing_configuration.dart';
-import 'package:papilio_note/configuration/pages.dart';
-import 'package:papilio_note/models/note_route_path.dart';
-import 'package:papilio_note/models/view_models.dart';
-import 'package:papilio_note/utils/constants.dart';
+import "package:flutter/material.dart";
+import "package:ioc_container/ioc_container.dart";
+import "package:papilio/page_args.dart";
+import "package:papilio/papilio_router_delegate.dart";
+import "package:papilio/papilio_routing_configuration.dart";
+import "package:papilio_note/configuration/pages.dart";
+import "package:papilio_note/models/note_route_path.dart";
+import "package:papilio_note/models/view_models.dart";
+import "package:papilio_note/utils/constants.dart";
 
 ///Configures routing in the app and handles navigation
 PapilioRoutingConfiguration<AppRouteInfo> routingConfig(
@@ -34,7 +34,7 @@ PapilioRoutingConfiguration<AppRouteInfo> routingConfig(
           //and deserialize it in parseRouteInformation
           appRouteInfo.routeLocation == RouteLocation.note
               ? RouteInformation(
-                  location: '${newNoteKey.value}/${appRouteInfo.noteId}',
+                  location: "${newNoteKey.value}/${appRouteInfo.noteId}",
                 )
               : appRouteInfo.routeLocation == RouteLocation.settings
                   ? RouteInformation(location: settingsKey.value)
@@ -58,7 +58,7 @@ Future<void> onSetNewRoutePath(
 Future<AppRouteInfo> parseRouteInformation(
   RouteInformation routeInformation,
 ) async {
-  if (routeInformation.location == null || routeInformation.location == '/') {
+  if (routeInformation.location == null || routeInformation.location == "/") {
     return defaultRouteInfo;
   }
 
@@ -68,7 +68,7 @@ Future<AppRouteInfo> parseRouteInformation(
     return defaultRouteInfo;
   }
 
-  final routeName = '/${uri.pathSegments.first}';
+  final routeName = "/${uri.pathSegments.first}";
 
   if (routeName == notesKey.value) {
     return defaultRouteInfo;
@@ -81,7 +81,7 @@ Future<AppRouteInfo> parseRouteInformation(
   }
 
   if (routeName == newNoteKey.value) {
-    if (uri.pathSegments.length < 2 || uri.pathSegments[1] == '') {
+    if (uri.pathSegments.length < 2 || uri.pathSegments[1] == "") {
       //The url was the note page without an id so boot the user
       //back to the default page.
       return defaultRouteInfo;

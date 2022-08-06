@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:papilio/bloc.dart';
-import 'package:papilio_note/models/data_model.dart';
-import 'package:papilio_note/utils/constants.dart';
+import "package:flutter/material.dart";
+import "package:papilio/bloc.dart";
+import "package:papilio_note/models/data_model.dart";
+import "package:papilio_note/utils/constants.dart";
 
 abstract class HasPageKey {
-  Key get pageKey;
   const HasPageKey();
+  Key get pageKey;
 }
 
 //View Models
@@ -17,33 +17,32 @@ class AppViewModel<T extends HasPageKey> {
   final T pageViewModel;
 
   static const AppViewModel<NotesViewModel> emptyNotesViewModel =
-      AppViewModel<NotesViewModel>('Papilio Note', NotesViewModel.empty);
+      AppViewModel<NotesViewModel>("Papilio Note", NotesViewModel.empty);
 
   static const emptySettingsViewModel = AppViewModel<SettingsViewModel>(
-    'Papilio Note Settings',
+    "Papilio Note Settings",
     SettingsViewModel(false),
   );
 
-  AppViewModel<T> copyWith({String? title, T? pageViewModel}) {
-    return AppViewModel<T>(
-      title ?? this.title,
-      pageViewModel ?? this.pageViewModel,
-    );
-  }
+  AppViewModel<T> copyWith({String? title, T? pageViewModel}) =>
+      AppViewModel<T>(
+        title ?? this.title,
+        pageViewModel ?? this.pageViewModel,
+      );
 }
 
 @immutable
 class NoteViewModel extends HasPageKey {
+  const NoteViewModel(this.id, {String? title, String? body, bool? isLoading})
+      : title = title ?? emptyTitle,
+        body = body ?? "",
+        isLoading = isLoading ?? true;
   final String id;
   final String title;
   final String body;
   final bool isLoading;
-  NoteViewModel(this.id, {String? title, String? body, bool? isLoading})
-      : title = title ?? emptyTitle,
-        body = body ?? '',
-        isLoading = isLoading ?? true;
 
-  static const emptyTitle = 'Untitled';
+  static const emptyTitle = "Untitled";
 
   NoteViewModel copyWith({
     String? id,
@@ -64,22 +63,22 @@ class NoteViewModel extends HasPageKey {
 
 @immutable
 class NoteListItemViewModel {
-  final String title;
-  final String excerpt;
-  final String id;
   const NoteListItemViewModel({
     required this.title,
     required this.excerpt,
     required this.id,
   });
+  final String title;
+  final String excerpt;
+  final String id;
 }
 
 @immutable
 class NotesViewModel extends HasPageKey {
+  const NotesViewModel(this.notes, this.isLoading);
   //TODO: use immutable lists
   final List<NoteListItemViewModel> notes;
   final bool isLoading;
-  const NotesViewModel(this.notes, this.isLoading);
 
   static const NotesViewModel empty = NotesViewModel([], true);
 
@@ -95,8 +94,8 @@ class NotesViewModel extends HasPageKey {
 
 @immutable
 class SettingsViewModel extends HasPageKey {
-  final bool isDarkMode;
   const SettingsViewModel(this.isDarkMode);
+  final bool isDarkMode;
 
   SettingsViewModel copyWith({bool? isDarkMode}) =>
       SettingsViewModel(isDarkMode ?? this.isDarkMode);
@@ -119,28 +118,28 @@ class LoadNoteEvent extends BlocEvent {}
 
 @immutable
 class ModifyBodyEvent extends BlocEvent {
+  const ModifyBodyEvent(this.body);
   final String body;
-  ModifyBodyEvent(this.body);
 }
 
 @immutable
 class ModifyNoteTitle extends BlocEvent {
+  const ModifyNoteTitle(this.noteTitle);
   final String noteTitle;
-  ModifyNoteTitle(this.noteTitle);
 }
 
 @immutable
 class NavigateToNoteEvent extends BlocEvent {
+  const NavigateToNoteEvent(this.noteId);
   final String noteId;
-  NavigateToNoteEvent(this.noteId);
 }
 
 class NewNoteEvent extends BlocEvent {}
 
 @immutable
 class SetTheme extends BlocEvent {
-  final bool isDarkMode;
   const SetTheme(this.isDarkMode);
+  final bool isDarkMode;
 }
 
 @immutable

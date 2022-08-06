@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart';
+import "package:flutter/foundation.dart";
 
 @immutable
 class AppRouteInfo {
+  const AppRouteInfo(this.routeLocation, {this.noteId});
   final RouteLocation routeLocation;
   final String? noteId;
-  const AppRouteInfo(this.routeLocation, {this.noteId});
   @override
   bool operator ==(Object other) =>
       other is AppRouteInfo &&

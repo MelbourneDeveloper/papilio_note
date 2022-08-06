@@ -1,22 +1,22 @@
-import 'dart:convert';
-import 'dart:math';
+import "dart:convert";
+import "dart:math";
 
-import 'package:flutter/material.dart';
-import 'package:ioc_container/ioc_container.dart';
-import 'package:navigation_drawer_menu/navigation_drawer_state.dart';
-import 'package:papilio/container_extensions.dart';
-import 'package:papilio/papilio_router_delegate.dart';
-import 'package:papilio/papilio_router_delegate_builder.dart';
-import 'package:papilio_note/models/data_model.dart';
-import 'package:papilio_note/models/note_route_path.dart';
-import 'package:papilio_note/models/view_models.dart';
-import 'package:papilio_note/pages/note.dart' as notey;
-import 'package:papilio_note/pages/notes.dart';
-import 'package:papilio_note/pages/settings.dart';
-import 'package:papilio_note/services/file_io/file_io_base.dart';
-import 'package:papilio_note/utils/constants.dart';
-import 'package:papilio_note/utils/misc.dart';
-import 'package:papilio_note/widgets/app_scaffold.dart';
+import "package:flutter/material.dart";
+import "package:ioc_container/ioc_container.dart";
+import "package:navigation_drawer_menu/navigation_drawer_state.dart";
+import "package:papilio/container_extensions.dart";
+import "package:papilio/papilio_router_delegate.dart";
+import "package:papilio/papilio_router_delegate_builder.dart";
+import "package:papilio_note/models/data_model.dart";
+import "package:papilio_note/models/note_route_path.dart";
+import "package:papilio_note/models/view_models.dart";
+import "package:papilio_note/pages/note.dart" as notey;
+import "package:papilio_note/pages/notes.dart";
+import "package:papilio_note/pages/settings.dart";
+import "package:papilio_note/services/file_io/file_io_base.dart";
+import "package:papilio_note/utils/constants.dart";
+import "package:papilio_note/utils/misc.dart";
+import "package:papilio_note/widgets/app_scaffold.dart";
 
 extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
   void addNotesPage(IocContainer container) =>
@@ -47,10 +47,12 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
             (getState, event, updateState, pageScope) async {
               final appViewModel = getState();
 
-              updateState(appViewModel.copyWith(
-                pageViewModel:
-                    appViewModel.pageViewModel.copyWith(isLoading: true),
-              ));
+              updateState(
+                appViewModel.copyWith(
+                  pageViewModel:
+                      appViewModel.pageViewModel.copyWith(isLoading: true),
+                ),
+              );
 
               final persistedModel = await load(container);
 
@@ -126,9 +128,11 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
             (getState, event, updateState, pageScope) =>
                 handleLoadNote(container, getState),
           )
-          ..addSyncHandler<ModifyBodyEvent>((state, event) => state.copyWith(
-                pageViewModel: state.pageViewModel.copyWith(body: event.body),
-              ))
+          ..addSyncHandler<ModifyBodyEvent>(
+            (state, event) => state.copyWith(
+              pageViewModel: state.pageViewModel.copyWith(body: event.body),
+            ),
+          )
           ..addHandler<ModifyNoteTitle>(
             (getState, event, updateState, pageScope) =>
                 handleModifyNoteTitle(container, event, getState),
@@ -137,11 +141,13 @@ extension RouterPages on PapilioRouterDelegateBuilder<AppRouteInfo> {
             (getstate, event, update, pageScope) async =>
                 handleModifyBodyEvent(container, event, getstate),
           )
-          ..addSyncHandler<ModifyNoteTitle>((state, event) => state.copyWith(
-                title: event.noteTitle,
-                pageViewModel:
-                    state.pageViewModel.copyWith(title: event.noteTitle),
-              )),
+          ..addSyncHandler<ModifyNoteTitle>(
+            (state, event) => state.copyWith(
+              title: event.noteTitle,
+              pageViewModel:
+                  state.pageViewModel.copyWith(title: event.noteTitle),
+            ),
+          ),
       );
 }
 
@@ -151,7 +157,7 @@ Future<AppViewModel<NoteViewModel>> handleLoadNote(
 ) async {
   var appViewModel = getState();
 
-  final md = (await getMd(container, appViewModel.pageViewModel.id)) ?? '';
+  final md = (await getMd(container, appViewModel.pageViewModel.id)) ?? "";
 
   final persistedModel = await load(container);
 
@@ -194,8 +200,11 @@ Future<AppViewModel<NoteViewModel>> handleModifyBodyEvent(
   await saveMd(container, state.pageViewModel.id, event.body);
   final persistedModel = await load(container);
 
-  persistedModel.replace(state.pageViewModel.toNote()
-    ..excerpt = event.body.substring(0, min(event.body.length, excerptLength)));
+  persistedModel.replace(
+    state.pageViewModel.toNote()
+      ..excerpt =
+          event.body.substring(0, min(event.body.length, excerptLength)),
+  );
 
   await save(persistedModel, container);
 
@@ -255,7 +264,7 @@ Future<PersistedModel> load(IocContainer ic) async {
 }
 
 Future<String?> getMd(IocContainer ic, String id) =>
-    ic.get<FileIOBase>().readText('$id.md');
+    ic.get<FileIOBase>().readText("$id.md");
 
 Future<void> saveMd(IocContainer ic, String id, String md) =>
-    ic.get<FileIOBase>().writeText('$id.md', md);
+    ic.get<FileIOBase>().writeText("$id.md", md);
